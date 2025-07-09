@@ -7,7 +7,7 @@ const config = {
   width: 512,
   height: 512,
   pixelArt: true,
-  parent: 'phaser-example',
+  parent: 'phaser-game-resistance',
   physics: {
     default: 'arcade',
     arcade: { debug: false }

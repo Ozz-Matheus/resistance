@@ -1,6 +1,6 @@
 // src/scenes/MainScene.js
 
-import Phaser from 'phaser';
+const Phaser = window.Phaser;
 import { preloadAssets } from '../systems/preloadAssets.js';
 import { createEntities } from '../systems/createEntities.js';
 import { setupCollisions } from '../systems/setupCollisions.js';

@@ -8,7 +8,7 @@
   </style>
 </head>
 <body>
-  <div id="phaser-example"></div>
+  <div id="phaser-game-resistance"></div>
 
   <!-- Phaser CDN -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
