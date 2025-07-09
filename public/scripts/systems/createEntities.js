@@ -9,9 +9,12 @@ export function createEntities(scene) {
 
   scene.bullets = scene.add.existing(new Bullets(scene.physics.world, scene, { name: 'bullets' }));
   scene.bullets.createMultiple({ key: 'bullet', quantity: 10 });
+  scene.bullets.children.each(bullet => bullet.onCreate());
 
   scene.enemyBullets = scene.add.existing(new Bullets(scene.physics.world, scene, { name: 'enemyBullets' }));
   scene.enemyBullets.createMultiple({ key: 'enemyBullet', quantity: 10 });
+  scene.enemyBullets.children.each(bullet => bullet.onCreate());
+
 
   scene.enemy = scene.physics.add.sprite(256, 128, 'enemy', 1);
   scene.enemy.setBodySize(160, 64);
