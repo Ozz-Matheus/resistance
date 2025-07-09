@@ -14,6 +14,6 @@
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
 
   <!-- Tu juego -->
-  <script type="module" src="{{ asset('scripts/game.js')}}"></script>
+  <script type="module" src="{{ asset('scripts/main.js')}}"></script>
 </body>
 </html>
