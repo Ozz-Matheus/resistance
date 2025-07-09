@@ -4,8 +4,9 @@ export function updateScene(scene) {
   scene.stars.y += 1;
   scene.stars.y %= 512;
 
+  // Muestra información del pool
   scene.text.setText([
-    `bullets: ${scene.bullets.getLength()}`,
-    `enemyBullets: ${scene.enemyBullets.getLength()}`
+    scene.bullets.poolInfo(),
+    scene.enemyBullets.poolInfo()
   ]);
 }

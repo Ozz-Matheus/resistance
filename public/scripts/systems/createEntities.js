@@ -1,21 +1,17 @@
 // src/systems/createEntities.js
 
+import { Bullets } from '../entities/Bullets.js';
+
 export function createEntities(scene) {
   scene.stars = scene.add.blitter(0, 0, 'starfield');
   scene.stars.create(0, 0);
   scene.stars.create(0, -512);
 
-  scene.bullets = scene.physics.add.group({
-    classType: Phaser.Physics.Arcade.Image,
-    maxSize: 10,
-    runChildUpdate: true
-  });
+  scene.bullets = scene.add.existing(new Bullets(scene.physics.world, scene, { name: 'bullets' }));
+  scene.bullets.createMultiple({ key: 'bullet', quantity: 10 });
 
-  scene.enemyBullets = scene.physics.add.group({
-    classType: Phaser.Physics.Arcade.Image,
-    maxSize: 10,
-    runChildUpdate: true
-  });
+  scene.enemyBullets = scene.add.existing(new Bullets(scene.physics.world, scene, { name: 'enemyBullets' }));
+  scene.enemyBullets.createMultiple({ key: 'enemyBullet', quantity: 10 });
 
   scene.enemy = scene.physics.add.sprite(256, 128, 'enemy', 1);
   scene.enemy.setBodySize(160, 64);
@@ -36,12 +32,15 @@ export function createEntities(scene) {
     delay: 750,
     loop: true,
     callback: () => {
-      const b = scene.enemyBullets.get(scene.enemy.x, scene.enemy.y + 32);
-      if (b) b.setActive(true).setVisible(true).setVelocity(0, 150);
+      scene.enemyBullets.fire(scene.enemy.x, scene.enemy.y + 32, 0, 150);
     }
   });
 
   scene.player = scene.physics.add.image(256, 448, 'ship');
+
+  scene.input.on('pointerdown', () => {
+    scene.bullets.fire(scene.player.x, scene.player.y, 0, -300);
+  });
 
   scene.text = scene.add.text(0, 480, '', {
     font: '16px monospace',

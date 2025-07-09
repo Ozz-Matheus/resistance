@@ -5,6 +5,7 @@ import { preloadAssets } from '../systems/preloadAssets.js';
 import { createEntities } from '../systems/createEntities.js';
 import { setupCollisions } from '../systems/setupCollisions.js';
 import { setupInput } from '../systems/setupInput.js';
+import { setupWorldBounds } from '../systems/setupWorldBounds.js';
 import { updateScene } from '../systems/updateScene.js';
 
 export class MainScene extends Phaser.Scene {
@@ -20,6 +21,7 @@ export class MainScene extends Phaser.Scene {
     createEntities(this);
     setupCollisions(this);
     setupInput(this);
+    setupWorldBounds(this);
   }
 
   update() {
