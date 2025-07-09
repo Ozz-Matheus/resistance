@@ -65,12 +65,11 @@ class Example extends Phaser.Scene
 
     preload ()
     {
-        // this.load.setBaseURL('https://cdn.phaserfiles.com/v385');
-        this.load.image('bullet', 'assets/sprites/bullets/bullet7.png');
-        this.load.image('enemyBullet', 'assets/sprites/bullets/bullet6.png');
-        this.load.image('ship', 'assets/sprites/bsquadron1.png');
+        this.load.image('bullet', 'assets/sprites/bullets/bullet.png');
+        this.load.image('enemyBullet', 'assets/sprites/bullets/boom.png');
+        this.load.image('ship', 'assets/sprites/spaceship-hero.png');
         this.load.image('starfield', 'assets/skies/starfield.png');
-        this.load.spritesheet('enemy', 'assets/sprites/bsquadron-enemies.png', {
+        this.load.spritesheet('enemy', 'assets/sprites/spaceship-boss.png', {
             frameWidth: 192,
             frameHeight: 160
         });
@@ -205,5 +204,3 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-
-
