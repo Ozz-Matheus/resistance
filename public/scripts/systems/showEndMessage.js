@@ -1,4 +1,4 @@
-// src/systems/showEndMessage.js
+// public/scripts/systems/showEndMessage.js
 
 export function showEndMessage(scene, message) {
   const centerX = scene.scale.width / 2;

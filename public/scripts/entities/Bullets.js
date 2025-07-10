@@ -1,4 +1,4 @@
-// src/entities/Bullets.js
+// public/scripts/entities/Bullets.js
 
 import { Bullet } from './Bullet.js';
 

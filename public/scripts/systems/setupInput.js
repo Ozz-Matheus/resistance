@@ -1,4 +1,4 @@
-// src/systems/setupInput.js
+// public/scripts/systems/setupInput.js
 
 export function setupInput(scene) {
 

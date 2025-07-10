@@ -1,4 +1,4 @@
-// src/systems/updateScene.js
+// public/scripts/systems/updateScene.js
 
 export function updateScene(scene) {
   scene.stars.y += 1;

@@ -1,6 +1,8 @@
-// src/main.js
+// public/scripts/main.js
 
 import { MainScene } from './scenes/MainScene.js';
+
+import StartScene from './scenes/StartScene.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -12,7 +14,7 @@ const config = {
     default: 'arcade',
     arcade: { debug: false }
   },
-  scene: [MainScene]
+  scene: [StartScene, MainScene]
 };
 
 new Phaser.Game(config);

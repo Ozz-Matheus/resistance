@@ -1,4 +1,4 @@
-// src/systems/setupWorldBounds.js
+// public/scripts/systems/setupWorldBounds.js
 
 export function setupWorldBounds(scene) {
   scene.physics.world.on('worldbounds', (body) => {

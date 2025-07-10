@@ -1,4 +1,4 @@
-// src/entities/Bullet.js
+// public/scripts/entities/Bullet.js
 
 export class Bullet extends Phaser.Physics.Arcade.Image {
   fire (x, y, vx, vy) {

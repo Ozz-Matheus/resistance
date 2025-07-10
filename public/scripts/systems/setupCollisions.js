@@ -1,4 +1,4 @@
-// src/systems/setupCollisions.js
+// public/scripts/systems/setupCollisions.js
 
 import { handlePlayerHit } from './handlePlayerHit.js';
 

@@ -1,4 +1,4 @@
-// src/systems/createEntities.js
+// public/scripts/systems/createEntities.js
 
 import { Bullets } from '../entities/Bullets.js';
 
@@ -21,7 +21,7 @@ export function createEntities(scene) {
 
   scene.enemy = scene.physics.add.sprite(256, 128, 'enemy', 1);
   scene.enemy.setBodySize(160, 64);
-  scene.enemy.state = 200;
+  scene.enemy.state = 100;
 
   scene.enemyTween = scene.tweens.add({
     targets: scene.enemy.body.velocity,

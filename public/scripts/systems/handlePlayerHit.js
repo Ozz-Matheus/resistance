@@ -1,4 +1,4 @@
-// src/systems/handlePlayerHit.js
+// public/scripts/systems/handlePlayerHit.js
 
 import { showEndMessage } from './showEndMessage.js';
 

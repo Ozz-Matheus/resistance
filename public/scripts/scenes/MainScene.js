@@ -1,4 +1,4 @@
-// src/scenes/MainScene.js
+// public/scripts/scenes/MainScene.js
 
 const Phaser = window.Phaser;
 import { preloadAssets } from '../systems/preloadAssets.js';
