@@ -1,6 +1,6 @@
 // public/scripts/systems/scoreManager.js
 
-export class ScoreManager {
+export class scoreManager {
   constructor(scene) {
     this.scene = scene;
     this.startTime = null;

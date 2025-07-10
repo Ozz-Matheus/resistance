@@ -4,8 +4,8 @@ export function showEndMessage(scene, message) {
   const centerX = scene.scale.width / 2;
   const centerY = scene.scale.height / 2;
 
-  // Mostrar el puntaje final
-  if (scene.scoreManager) {
+  // Mostrar el tiempo solo si GANASTE
+  if (message === 'GANASTE' && scene.scoreManager) {
     scene.scoreManager.finalize();
 
     const tiempo = scene.scoreManager.getElapsedSeconds();
@@ -36,4 +36,3 @@ export function showEndMessage(scene, message) {
       scene.scene.start('MainScene');
     });
 }
-

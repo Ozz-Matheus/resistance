@@ -6,7 +6,7 @@ export default class StartScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('start-bg', 'assets/start-screen.png?1');
+        this.load.image('start-bg', 'assets/start-screen.png?001');
     }
 
     create() {
