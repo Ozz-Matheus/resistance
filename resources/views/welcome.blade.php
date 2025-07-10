@@ -19,8 +19,14 @@
 
     canvas {
       max-width: 100%;
+      width: 95%;
       height: auto;
       display: block;
+    }
+    @media(min-width:1199px){
+       canvas {
+        width: 50%;
+      }
     }
   </style>
 </head>
