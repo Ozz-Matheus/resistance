@@ -11,6 +11,7 @@ import { updateScene } from '../systems/updateScene.js';
 export class MainScene extends Phaser.Scene {
   constructor() {
     super('MainScene');
+    this.debug = false;
   }
 
   preload() {

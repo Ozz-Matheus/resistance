@@ -5,8 +5,10 @@ export function updateScene(scene) {
   scene.stars.y %= 512;
 
   // Muestra información del pool
-  scene.text.setText([
-    scene.bullets.poolInfo(),
-    scene.enemyBullets.poolInfo()
-  ]);
+  if (scene.debug && scene.text) {
+    scene.text.setText([
+      scene.bullets.poolInfo(),
+      scene.enemyBullets.poolInfo()
+    ]);
+  }
 }

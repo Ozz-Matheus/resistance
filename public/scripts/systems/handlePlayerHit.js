@@ -13,12 +13,13 @@ export function handlePlayerHit(scene, player, bullet) {
 
     scene.playerLives--;
 
-    scene.text.setText([
-        scene.bullets.poolInfo(),
-        scene.enemyBullets.poolInfo(),
-        `Lives: ${scene.playerLives}`
-    ]);
-
+    if (scene.debug && scene.text) {
+        scene.text.setText([
+            scene.bullets.poolInfo(),
+            scene.enemyBullets.poolInfo(),
+            `Lives: ${scene.playerLives}`
+        ]);
+    }
     if (scene.playerLives <= 0) {
 
         scene.playerActive = false;

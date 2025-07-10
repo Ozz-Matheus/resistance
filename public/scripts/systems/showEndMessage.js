@@ -12,7 +12,7 @@ export function showEndMessage(scene, message) {
 
   // Botón de reinicio
   const button = scene.add.text(centerX, centerY + 20, 'Reiniciar', {
-    fontSize: '24px',
+    fontSize: '18px',
     backgroundColor: '#d4d4d4',
     padding: { x: 12, y: 8 },
     color: '#000',

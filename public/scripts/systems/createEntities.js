@@ -52,10 +52,12 @@ export function createEntities(scene) {
     scene.bullets.fire(scene.player.x, scene.player.y, 0, -300);
   });
 
-  scene.text = scene.add.text(0, 480, '', {
-    font: '16px monospace',
-    fill: 'aqua'
-  });
+  if (scene.debug) {
+    scene.text = scene.add.text(0, 480, '', {
+      font: '16px monospace',
+      fill: 'aqua'
+    });
+  }
 
   scene.particles = scene.add.particles(0, 0, 'bullet', {
     alpha: { start: 1, end: 0 },
