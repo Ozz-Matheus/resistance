@@ -1,6 +1,11 @@
 // src/systems/handlePlayerHit.js
 
+import { showEndMessage } from './showEndMessage.js';
+
 export function handlePlayerHit(scene, player, bullet) {
+
+    if (scene.isGameOver) return;
+
     const { x, y } = bullet.body.center;
 
     bullet.disableBody(true, true);
@@ -15,10 +20,11 @@ export function handlePlayerHit(scene, player, bullet) {
     ]);
 
     if (scene.playerLives <= 0) {
-        scene.scene.pause();
-        scene.add.text(150, 250, 'GAME OVER', {
-            fontSize: '32px',
-            fill: '#fff'
-        });
+
+        scene.playerActive = false;
+        scene.enemyFiring.remove();
+        scene.isGameOver = true;
+
+        showEndMessage(scene, 'HAS PERDIDO');
     }
 }

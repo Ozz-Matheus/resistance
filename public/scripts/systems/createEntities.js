@@ -3,6 +3,9 @@
 import { Bullets } from '../entities/Bullets.js';
 
 export function createEntities(scene) {
+
+  scene.isGameOver = false;
+
   scene.stars = scene.add.blitter(0, 0, 'starfield');
   scene.stars.create(0, 0);
   scene.stars.create(0, -512);
@@ -40,10 +43,12 @@ export function createEntities(scene) {
   });
 
   scene.player = scene.physics.add.image(256, 448, 'ship');
-  scene.playerLives = 3;
-  console.log('Player lives:', scene.playerLives);
+  scene.playerLives = 1;
+
+  scene.playerActive = true;
 
   scene.input.on('pointerdown', () => {
+    if (!scene.playerActive) return;
     scene.bullets.fire(scene.player.x, scene.player.y, 0, -300);
   });
 

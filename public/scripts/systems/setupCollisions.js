@@ -2,6 +2,8 @@
 
 import { handlePlayerHit } from './handlePlayerHit.js';
 
+import { showEndMessage } from './showEndMessage.js';
+
 export function setupCollisions(scene) {
   scene.physics.add.overlap(scene.enemy, scene.bullets, (enemy, bullet) => {
     const { x, y } = bullet.body.center;
@@ -15,12 +17,8 @@ export function setupCollisions(scene) {
       enemy.body.checkCollision.none = true;
       scene.enemyTween.stop();
       scene.enemyFiring.remove();
-
-      scene.scene.pause();
-      scene.add.text(150, 250, 'YOU WIN', {
-        fontSize: '32px',
-        fill: '#0f0'
-      });
+      scene.isGameOver = true;
+      showEndMessage(scene, 'GANASTE');
     }
 
   });
