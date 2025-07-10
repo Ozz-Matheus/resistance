@@ -4,6 +4,18 @@ export function showEndMessage(scene, message) {
   const centerX = scene.scale.width / 2;
   const centerY = scene.scale.height / 2;
 
+  // Mostrar el puntaje final
+  if (scene.scoreManager) {
+    scene.scoreManager.finalize();
+
+    const tiempo = scene.scoreManager.getElapsedSeconds();
+
+    scene.add.text(centerX, centerY - 80, `Tu tiempo: ${tiempo}s`, {
+      fontSize: '24px',
+      fill: '#fff'
+    }).setOrigin(0.5);
+  }
+
   // Mensaje de fin
   scene.add.text(centerX, centerY - 40, message, {
     fontSize: '32px',

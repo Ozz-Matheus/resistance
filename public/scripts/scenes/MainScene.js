@@ -7,6 +7,7 @@ import { setupCollisions } from '../systems/setupCollisions.js';
 import { setupInput } from '../systems/setupInput.js';
 import { setupWorldBounds } from '../systems/setupWorldBounds.js';
 import { updateScene } from '../systems/updateScene.js';
+import { ScoreManager } from '../systems/scoreManager.js';
 
 export class MainScene extends Phaser.Scene {
   constructor() {
@@ -23,9 +24,18 @@ export class MainScene extends Phaser.Scene {
     setupCollisions(this);
     setupInput(this);
     setupWorldBounds(this);
+
+    this.scoreManager = new ScoreManager(this);
+    this.scoreManager.showTimeUI();
+
   }
 
   update() {
     updateScene(this);
+
+    if (this.scoreManager) {
+      this.scoreManager.updateTimeUI();
+    }
+
   }
 }

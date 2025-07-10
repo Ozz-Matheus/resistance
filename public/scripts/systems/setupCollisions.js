@@ -1,7 +1,6 @@
 // public/scripts/systems/setupCollisions.js
 
 import { handlePlayerHit } from './handlePlayerHit.js';
-
 import { showEndMessage } from './showEndMessage.js';
 
 export function setupCollisions(scene) {
@@ -10,7 +9,12 @@ export function setupCollisions(scene) {
     bullet.disableBody(true, true);
     scene.particles.emitParticleAt(x, y);
 
-    enemy.state -= 1;
+    const damage = Phaser.Math.Between(1, 2);
+    enemy.state -= damage;
+
+    if (scene.scoreManager) {
+      scene.scoreManager.startTimer();
+    }
 
     if (enemy.state <= 0) {
       enemy.setFrame(3);
@@ -18,6 +22,8 @@ export function setupCollisions(scene) {
       scene.enemyTween.stop();
       scene.enemyFiring.remove();
       scene.isGameOver = true;
+
+      scene.scoreManager?.finalize();
       showEndMessage(scene, 'GANASTE');
     }
 
