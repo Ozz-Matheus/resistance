@@ -9,12 +9,20 @@ export function setupCollisions(scene) {
     scene.particles.emitParticleAt(x, y);
 
     enemy.state -= 1;
+
     if (enemy.state <= 0) {
       enemy.setFrame(3);
       enemy.body.checkCollision.none = true;
       scene.enemyTween.stop();
       scene.enemyFiring.remove();
+
+      scene.scene.pause();
+      scene.add.text(150, 250, 'YOU WIN', {
+        fontSize: '32px',
+        fill: '#0f0'
+      });
     }
+
   });
 
   scene.physics.add.overlap(scene.player, scene.enemyBullets, (player, bullet) => {
