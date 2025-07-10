@@ -40,6 +40,8 @@ export function createEntities(scene) {
   });
 
   scene.player = scene.physics.add.image(256, 448, 'ship');
+  scene.playerLives = 3;
+  console.log('Player lives:', scene.playerLives);
 
   scene.input.on('pointerdown', () => {
     scene.bullets.fire(scene.player.x, scene.player.y, 0, -300);

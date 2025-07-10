@@ -1,12 +1,14 @@
 // src/systems/setupCollisions.js
 
+import { handlePlayerHit } from './handlePlayerHit.js';
+
 export function setupCollisions(scene) {
   scene.physics.add.overlap(scene.enemy, scene.bullets, (enemy, bullet) => {
     const { x, y } = bullet.body.center;
     bullet.disableBody(true, true);
     scene.particles.emitParticleAt(x, y);
 
-    enemy.state--;
+    enemy.state -= 1;
     if (enemy.state <= 0) {
       enemy.setFrame(3);
       enemy.body.checkCollision.none = true;
@@ -16,9 +18,7 @@ export function setupCollisions(scene) {
   });
 
   scene.physics.add.overlap(scene.player, scene.enemyBullets, (player, bullet) => {
-    const { x, y } = bullet.body.center;
-    bullet.disableBody(true, true);
-    scene.particles.emitParticleAt(x, y);
+    handlePlayerHit(scene, player, bullet);
   });
 
   scene.physics.world.on('worldbounds', body => {
