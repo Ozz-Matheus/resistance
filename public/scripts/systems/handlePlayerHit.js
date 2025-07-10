@@ -22,6 +22,8 @@ export function handlePlayerHit(scene, player, bullet) {
     if (scene.playerLives <= 0) {
 
         scene.playerActive = false;
+        scene.player.setTint(0xff0000);
+        scene.player.setAlpha(0.4);
         scene.enemyFiring.remove();
         scene.isGameOver = true;
 
