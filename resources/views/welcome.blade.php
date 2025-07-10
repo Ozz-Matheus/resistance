@@ -4,7 +4,24 @@
   <meta charset="UTF-8">
   <title>Cosmic Resistance</title>
   <style>
-    body { margin: 0; background: #000; overflow: hidden; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #000;
+    }
+
+    #phaser-game-resistance {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    canvas {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
   </style>
 </head>
 <body>
