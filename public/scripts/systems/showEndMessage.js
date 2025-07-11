@@ -10,7 +10,7 @@ export function showEndMessage(scene, message) {
 
     const tiempo = scene.scoreManager.getElapsedSeconds();
 
-    scene.add.text(centerX, centerY - 80, `Tu tiempo: ${tiempo}s`, {
+    scene.add.text(centerX, centerY - 80, `Haz ganado en : ${tiempo}s`, {
       fontSize: '24px',
       fill: '#fff'
     }).setOrigin(0.5);

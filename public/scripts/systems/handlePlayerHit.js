@@ -28,6 +28,8 @@ export function handlePlayerHit(scene, player, bullet) {
         scene.enemyFiring.remove();
         scene.isGameOver = true;
 
+        scene.scoreManager?.finalize();
+
         showEndMessage(scene, 'HAS PERDIDO');
     }
 }
