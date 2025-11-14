@@ -59,12 +59,13 @@ class UserResource extends Resource
                         name: 'roles',
                         titleAttribute: 'name',
                         modifyQueryUsing: fn ($query) => $query
-                            ->when(! auth()->user()->hasRole('super_admin'), fn ($q) => $q->where('name', '!=', 'super_admin'))
+                            ->where('name', '!=', 'super_admin'),
                     )
                     ->bulkToggleable()
                     ->getOptionLabelFromRecordUsing(fn ($record) => Str::headline($record->name))
                     ->columnSpanFull()
-                    ->columns(3),
+                    ->columns(3)
+                    ->required(),
             ])->columns(3);
     }
 
