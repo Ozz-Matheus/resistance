@@ -111,8 +111,6 @@
           score: parseInt(form.score.value || '0', 10),
         };
 
-        console.log(data);
-
         try {
           await fetch(window.SCORE_STORE_URL, {
             method: 'POST',
