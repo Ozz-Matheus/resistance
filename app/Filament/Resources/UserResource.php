@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -20,7 +22,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationLabel = 'Usuarios';
 
-    protected static ?string $navigationGroup = 'Gestión de usuarios';
+    protected static ?string $navigationGroup = 'Gestión';
 
     protected static ?int $navigationSort = 5;
 
@@ -39,9 +41,6 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at')
-                    ->label('Correo electrónico verificado en')
-                    ->native(false),
                 Forms\Components\TextInput::make('password')
                     ->label(__('Contraseña'))
                     ->password()
@@ -54,22 +53,19 @@ class UserResource extends Resource
                             ? 'Déjelo en blanco si no desea cambiar su contraseña.'
                             : null
                     ),
-                Forms\Components\Select::make('roles')
+                Forms\Components\CheckboxList::make('roles')
                     ->label(__('Roles'))
-                    ->relationship('roles', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->searchable()
-                    ->options(function () {
-                        $roles = \Spatie\Permission\Models\Role::pluck('name', 'id');
-
-                        if (! auth()->user()->hasRole('super_admin')) {
-                            $roles = $roles->reject(fn ($name) => $name === 'super_admin');
-                        }
-
-                        return $roles;
-                    }),
-            ]);
+                    ->relationship(
+                        name: 'roles',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn ($query) => $query
+                            ->when(! auth()->user()->hasRole('super_admin'), fn ($q) => $q->where('name', '!=', 'super_admin'))
+                    )
+                    ->bulkToggleable()
+                    ->getOptionLabelFromRecordUsing(fn ($record) => Str::headline($record->name))
+                    ->columnSpanFull()
+                    ->columns(3),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -81,11 +77,21 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Correo electrónico')
+                    ->copyable()
+                    ->copyMessage(__('Email copied to clipboard'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('roles.name')
-                    ->label(__('Capacidades'))
+                    ->label('Capacidades')
+                    ->formatStateUsing(fn ($state) => Str::headline($state))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'super_admin' => 'danger',
+                        'admin' => 'primary',
+                        'panel_user' => 'warning',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->label('Correo electrónico verificado en')
                     ->dateTime()
@@ -129,5 +135,18 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (! auth()->user()->hasRole('super_admin')) {
+            $query->whereDoesntHave('roles', function ($q) {
+                $q->where('name', 'super_admin');
+            });
+        }
+
+        return $query;
     }
 }

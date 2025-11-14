@@ -294,6 +294,17 @@ export class Game extends Phaser.Scene {
 
       this.damagePlayer(player);
 
+      // Si ya no quedan enemigos y SIGUE con vidas, pasar de nivel
+      if (Settings.getLives() > 0 && this.enemies.get().countActive(true) === 0) {
+        this.time.delayedCall(1000, () => {
+          if (Settings.isLastLevel()) {
+            this.scene.start('victory');
+          } else {
+            this.scene.start('levelpassed');
+          }
+        });
+      }
+
     }
 
     damagePlayer(player) {

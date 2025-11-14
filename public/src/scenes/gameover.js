@@ -50,6 +50,12 @@ export class GameOver extends Phaser.Scene {
           }).setOrigin(0.5);
         }
 
+        // Mostrar form para guardar Puntaje
+        const score = Settings.getPoints();
+        if (window.showPlayerScoreForm) {
+          window.showPlayerScoreForm(score);
+        }
+
         this.input.once('pointerdown', () => {
             this.sound.stopAll();
             this.scene.start('mainmenu');

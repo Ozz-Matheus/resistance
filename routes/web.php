@@ -1,10 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GameScoreController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Save Game
+Route::post('/scores', [GameScoreController::class, 'store'])
+    ->name('scores.store');
 
 // Reset...
 Route::get('clear', function () {
