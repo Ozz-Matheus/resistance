@@ -74,7 +74,7 @@
                style="margin:8px 0 0; font-size:12px; min-height:1em;"></p>
 
       <div style="display:flex; gap:8px; justify-content:flex-end;">
-        <button type="button" id="player-score-skip">Omitir</button>
+        <button type="button" id="player-score-skip">Cerrar</button>
         <button type="submit">Guardar</button>
       </div>
     </form>
@@ -97,8 +97,14 @@
         .querySelector('meta[name="csrf-token"]')
         .getAttribute('content');
 
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      let alreadySaved = false;
+
       scoreInput.value = score;
       status.textContent = '';
+      skip.textContent = 'Omitir';
+      submitBtn.disabled = false;
       modal.style.display = 'flex';
 
       const close = () => {
@@ -109,6 +115,10 @@
 
       async function onSubmit(e) {
         e.preventDefault();
+
+        if (alreadySaved) {
+          return; // No permite volver a guardar
+        }
 
         const data = {
           alias: form.alias.value,
@@ -132,8 +142,10 @@
           });
 
           if (response.ok) {
+            alreadySaved = true;
             status.textContent = 'Score guardado. ¡Gracias!';
-            setTimeout(() => close(), 1200);
+            skip.textContent = 'Cerrar';
+            submitBtn.disabled = true;
           } else {
             status.textContent = 'No se pudo guardar. Intenta más tarde.';
           }
