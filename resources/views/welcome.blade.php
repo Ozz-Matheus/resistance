@@ -23,6 +23,7 @@
       overflow: hidden;
       touch-action: none;
     }
+    input{ box-sizing: border-box }
     canvas{ display:block; border:none }
   </style>
 </head>
@@ -37,14 +38,14 @@
        background: rgba(0,0,0,.7);
        z-index: 9999;">
     <form id="player-score-form" style="
-          background: #111;
+          background: #d4d4d41a;
           padding: 16px;
           border-radius: 8px;
           max-width: 320px;
           width: 90%;
           color: #fff;
           font-family: system-ui, sans-serif;">
-      <h2 style="margin-bottom: 8px;">Nuevo score</h2>
+      <h2 style="margin-bottom: 12px;">Nuevo score</h2>
 
       <label style="display:block; margin-bottom:8px;">
         Alias
