@@ -38,7 +38,7 @@
        background: rgba(0,0,0,.7);
        z-index: 9999;">
     <form id="player-score-form" style="
-          background: #d4d4d41a;
+          background: rgba(0,0,0,0.7);
           padding: 16px;
           border-radius: 8px;
           max-width: 320px;
@@ -70,6 +70,9 @@
 
       <input type="hidden" name="score" id="player-score-value">
 
+      <p id="player-score-status"
+               style="margin:8px 0 0; font-size:12px; min-height:1em;"></p>
+
       <div style="display:flex; gap:8px; justify-content:flex-end;">
         <button type="button" id="player-score-skip">Omitir</button>
         <button type="submit">Guardar</button>
@@ -89,11 +92,13 @@
       const form = document.getElementById('player-score-form');
       const skip = document.getElementById('player-score-skip');
       const scoreInput = document.getElementById('player-score-value');
+      const status = document.getElementById('player-score-status');
       const csrf = document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute('content');
 
       scoreInput.value = score;
+      status.textContent = '';
       modal.style.display = 'flex';
 
       const close = () => {
@@ -112,8 +117,10 @@
           score: parseInt(form.score.value || '0', 10),
         };
 
+        status.textContent = 'Guardando...';
+
         try {
-          await fetch(window.SCORE_STORE_URL, {
+          const response = await fetch(window.SCORE_STORE_URL, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -123,14 +130,21 @@
             },
             body: JSON.stringify(data),
           });
+
+          if (response.ok) {
+            status.textContent = 'Score guardado. ¡Gracias!';
+            setTimeout(() => close(), 1200);
+          } else {
+            status.textContent = 'No se pudo guardar. Intenta más tarde.';
+          }
         } catch (err) {
           console.error(err);
-        } finally {
-          close();
+          status.textContent = 'Error de conexión. Intenta más tarde.';
         }
       }
 
       function onSkip() {
+        status.textContent = '';
         close();
       }
 
