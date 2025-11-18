@@ -12,9 +12,15 @@ class GameScoreResource extends Resource
 {
     protected static ?string $model = GameScore::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rocket-launch';
+    protected static ?string $modelLabel = 'Puntaje';
+
+    protected static ?string $pluralModelLabel = 'Puntajes';
+
+    protected static ?string $navigationLabel = 'Puntajes';
 
     protected static ?string $navigationGroup = 'Gestión';
+
+    protected static ?string $navigationIcon = 'heroicon-o-rocket-launch';
 
     protected static ?int $navigationSort = 4;
 
@@ -25,7 +31,7 @@ class GameScoreResource extends Resource
                 Tables\Columns\TextColumn::make('alias')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->label('Correo electrónico')
+                    ->label('Correo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Teléfono')

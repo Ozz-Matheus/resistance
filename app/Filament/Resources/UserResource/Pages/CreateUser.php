@@ -18,5 +18,4 @@ class CreateUser extends CreateRecord
     {
         return false;
     }
-
 }
