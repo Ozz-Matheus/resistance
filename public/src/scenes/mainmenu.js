@@ -3,7 +3,6 @@
 import { Texts } from '../utils/translations.js';
 import { Settings } from '../settings.js';
 import { fontScale } from '../utils/ui.js';
-import { createBackground } from '../utils/background.js';
 
 export class MainMenu extends Phaser.Scene {
     constructor() {
@@ -16,9 +15,19 @@ export class MainMenu extends Phaser.Scene {
 
         const { width, height } = this.sys.game.config;
 
-        createBackground(this, -10);
+        const bg = this.add.image(0, 0, 'start_screen')
+          .setOrigin(0, 0)
+          .setScrollFactor(0)
+          .setDepth(-10);
 
-        this.add.text(width / 2, height / 2, "Phoenix", {
+        const resizeBg = () => {
+          bg.setDisplaySize(this.scale.width, this.scale.height);
+        };
+        resizeBg();
+
+        this.scale.on('resize', resizeBg);
+
+        this.add.text(width / 2, height / 2, Texts.welcome, {
             fontSize: `${title}px`,
             fontStyle: 'bold',
             fill: '#00b83f',
