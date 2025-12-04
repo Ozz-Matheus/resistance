@@ -27,22 +27,7 @@ export class MainMenu extends Phaser.Scene {
 
         this.scale.on('resize', resizeBg);
 
-        this.add.text(width / 2, height / 2, Texts.welcome, {
-            fontSize: `${title}px`,
-            fontStyle: 'bold',
-            fill: '#00b83f',
-            fontFamily: 'Verdana',
-            shadow: {
-              offsetX: 1,
-              offsetY: 1,
-              color: '#006a00',
-              blur: 6,
-              fill: true
-            }
-
-        }).setOrigin(0.5);
-
-        this.add.text(width / 2, height / 2 + 80, Texts.newGame, {
+        this.add.text(width / 2, height / 2 + 140, Texts.newGame, {
             fontSize: `${body}px`,
             fill: '#ffffff',
             fontFamily: 'Verdana',

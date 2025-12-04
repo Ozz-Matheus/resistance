@@ -2,7 +2,6 @@
 
 export const Texts = {
   start: "Toca para iniciar...",
-  welcome: "Bienvenid@s",
   newGame: "Nueva Partida",
   loading: "CARGANDO...",
   gameOver: "Has perdido",
