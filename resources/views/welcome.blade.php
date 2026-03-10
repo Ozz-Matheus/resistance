@@ -15,7 +15,10 @@
       --safe-left:   env(safe-area-inset-left, 0px);
     }
     /* Alto real en móviles (sin afectar canvas con padding) */
-    html, body { height: 100dvh; }
+    html, body {
+      width: 100vw;
+      height: 100dvh;
+    }
     body{
       margin: 0;
       padding: 0;

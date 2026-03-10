@@ -5,7 +5,7 @@ import { Texts } from '../utils/translations.js';
 import { loader } from './loader.js';
 import { Settings } from '../settings.js';
 import { Stars } from '../components/stars.js';
-import { fontScale } from '../utils/ui.js';
+import { fontScale, TextStyles } from '../utils/ui.js';
 import { createBackground } from '../utils/background.js';
 
 export class LevelPassedScene extends Phaser.Scene {
@@ -32,15 +32,7 @@ export class LevelPassedScene extends Phaser.Scene {
     const heading = this.add.text(width / 2, height / 3, Texts.levelPassed, {
       fontSize: `${body}px`,
       fontStyle: 'bold',
-      fill: '#00b83f',
-      fontFamily: 'Verdana',
-      shadow: {
-        offsetX: 1,
-        offsetY: 1,
-        color: '#006a00',
-        blur: 6,
-        fill: true
-      }
+      ...TextStyles.success
     }).setOrigin(0.5).setAlpha(0);
 
     this.tweens.add({

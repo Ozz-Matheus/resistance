@@ -2,7 +2,7 @@
 
 import { Settings } from '../settings.js';
 import { Texts } from '../utils/translations.js';
-import { fontScale } from '../utils/ui.js';
+import { fontScale, TextStyles } from '../utils/ui.js';
 
 export class PreLevelScene extends Phaser.Scene {
   constructor() {
@@ -18,15 +18,7 @@ export class PreLevelScene extends Phaser.Scene {
     const levelText = this.add.text(width / 2, height / 2, Texts.level(Settings.getLevel()), {
       fontSize: `${title}px`,
       fontStyle: 'bold',
-      fill: '#00b83f',
-      fontFamily: 'Verdana',
-      shadow: {
-        offsetX: 1,
-        offsetY: 1,
-        color: '#006a00',
-        blur: 8,
-        fill: true
-      }
+      ...TextStyles.success
     }).setOrigin(0.5).setAlpha(0);
 
     this.tweens.add({

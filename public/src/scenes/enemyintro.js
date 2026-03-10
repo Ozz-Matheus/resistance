@@ -1,7 +1,7 @@
 // src/scenes/enemyintro.js
 
 import { Texts } from '../utils/translations.js';
-import { fontScale } from '../utils/ui.js';
+import { fontScale, TextStyles } from '../utils/ui.js';
 
 export class EnemyIntroScene extends Phaser.Scene {
   constructor() {
@@ -18,15 +18,7 @@ export class EnemyIntroScene extends Phaser.Scene {
 
     const message = this.add.text(width / 2, height / 1.4, Texts.loading, {
       fontSize: `${md}px`,
-      fill: '#25d366',
-      fontFamily: 'Verdana',
-      shadow: {
-        offsetX: 1,
-        offsetY: 1,
-        color: '#006a00',
-        blur: 6,
-        fill: true
-      }
+      ...TextStyles.success
     }).setOrigin(0.5).setAlpha(0);
 
     this.tweens.add({

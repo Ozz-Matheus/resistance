@@ -4,7 +4,7 @@ import { SoundManager } from '../utils/soundManager.js';
 import { Texts } from '../utils/translations.js';
 import { loader } from './loader.js';
 import { Settings } from '../settings.js';
-import { fontScale } from '../utils/ui.js';
+import { fontScale, TextStyles } from '../utils/ui.js';
 
 export class StartScene extends Phaser.Scene {
   constructor() {
@@ -25,15 +25,7 @@ export class StartScene extends Phaser.Scene {
 
     this.add.text(width / 2, height / 2, Texts.start, {
       fontSize: `${body}px`,
-      fill: '#ffffff',
-      fontFamily: 'Verdana',
-      shadow: {
-        offsetX: 1,
-        offsetY: 1,
-        color: '#b7b7b7',
-        blur: 4,
-        fill: true
-      }
+      ...TextStyles.base
     }).setOrigin(0.5);
 
     this.input.once('pointerdown', () => {

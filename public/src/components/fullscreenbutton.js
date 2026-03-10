@@ -41,6 +41,11 @@ export class FullscreenButton {
 
     place();
     this.relatedScene.scale.on('resize', place);
+
+    this.relatedScene.events.once('shutdown', () => {
+        this.relatedScene.scale.off('resize', place);
+    });
+
   }
 
 }

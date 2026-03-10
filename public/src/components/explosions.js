@@ -55,9 +55,10 @@ export class Explosions{
 
             if (sound) sound.play();
 
-            setTimeout(() => {
+            this.relatedScene.time.delayedCall(Explosions.DURATION_OF_THE_EXPLOSION, () => {
                 explosion.setActive(false).setVisible(false);
-            }, Explosions.DURATION_OF_THE_EXPLOSION);
+            });
+
         }
     }
 

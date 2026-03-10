@@ -22,6 +22,9 @@ import { createBackground } from '../utils/background.js';
 
 export class Game extends Phaser.Scene {
 
+    // Probabilidad de soltar un power-up (porcentaje)
+    static DROP_RATE_POWERUP_PERCENTAGE = 2;
+
     constructor() {
         super({ key: 'game' });
     }
@@ -68,6 +71,10 @@ export class Game extends Phaser.Scene {
 
         this.registry.set('level', Settings.getLevel());
 
+        this.registry.set('points', Settings.getPoints());
+
+        this.registry.set('lives', Settings.getLives());
+
         this.bullet_sound = this.sound.add('bullet-sound');
         this.explosion_sound = this.sound.add('explosion-sound');
         this.die_throw = this.sound.add('die-throw');
@@ -112,26 +119,25 @@ export class Game extends Phaser.Scene {
 
     }
 
-    update() {
-
+    update(time, delta) {
         this.handlePlayerShooting();
-
         this.handleEnemyShooting();
 
         this.stars.update();
         this.player.update();
         this.bullets.update();
-        this.enemies.update();
+
+        // Pasamos el delta time a la clase de enemigos
+        this.enemies.update(time, delta);
+
         this.attacks.update();
 
         const props = this.virtualGamepad.getProperties();
-
         if (props.left) {
           this.player.get().setVelocityX(-Player.SPEED_ON_THE_X_AXIS);
         } else if (props.right) {
           this.player.get().setVelocityX(Player.SPEED_ON_THE_X_AXIS);
         }
-
     }
 
 
@@ -145,7 +151,7 @@ export class Game extends Phaser.Scene {
                 //console.log('bullet');
 
                 let bulletsFired = 0;
-                const maxBullets = Bullets.MAXIMUM_NUMBER_OF_BULLETS;
+                const maxBullets = this.bullets.activeLimit;
 
                 this.bullets.get().getChildren().forEach(bullet => {
                   if (!bullet.active && !bullet.visible && bulletsFired < maxBullets) {
@@ -167,94 +173,63 @@ export class Game extends Phaser.Scene {
     }
 
 
-    handleBulletHitsEnemy(enemies, bullets){
+    handleBulletHitsEnemy(enemies, bullets) {
 
-        //console.log("explosion");
-
-        let find = false;
-
-        this.explosions.get().getChildren().forEach(explosion => {
-
-            if(!explosion.active && !explosion.visible && !find){
-
-                find = true;
-
-                explosion.setActive(true).setVisible(true);
-                explosion.setX( enemies.x );
-                explosion.setY( enemies.y );
-                explosion.setScale(2);
-                this.explosion_sound.play();
-
-                setTimeout( ()=> {
-                    explosion.setActive(false).setVisible(false);
-                }, Explosions.DURATION_OF_THE_EXPLOSION);
-
-            }
-        });
+        this.explosions.spawn(enemies.x, enemies.y, this.explosion_sound);
 
         const score = enemies.getData('score') ?? 100;
-        Settings.setPoints(Settings.getPoints() + score);
-
-        this.scoreboard.updatePoints(Settings.getPoints());
-
+        this.registry.set('points', this.registry.get('points') + score);
 
         bullets.setActive(false).setVisible(false).disableBody(true, true);
         enemies.setActive(false).setVisible(false).disableBody(true, true);
 
         this.particles.spawn(enemies.x, enemies.y);
 
-        if (Phaser.Math.Between(0, 100) < 2) {  // 2% chance
+        if (Phaser.Math.Between(0, 100) < Game.DROP_RATE_POWERUP_PERCENTAGE) {
           this.powerups.spawn(enemies.x, enemies.y);
         }
 
         if (this.enemies.get().countActive(true) === 0) {
           this.time.delayedCall(1000, () => {
             if (Settings.isLastLevel()) {
+              Settings.setPoints(this.registry.get('points'));
               this.scene.start('victory');
             } else {
+              Settings.setPoints(this.registry.get('points'));
               this.scene.start('levelpassed');
             }
-          });
+           });
         }
     }
 
-    handleEnemyShooting(){
+    handleEnemyShooting() {
+        // 1. Verificamos si es momento de disparar. Si no, salimos de inmediato para ahorrar CPU.
+        if (this.time.now < this.attacks.rhythm.flag || Phaser.Math.Between(0, 999) >= 20) {
+            return;
+        }
 
-        //console.log("Attack");
+        // 2. Filtramos para obtener solo los enemigos que siguen vivos (activos)
+        const activeEnemies = this.enemies.get().getChildren().filter(e => e.active);
+        if (activeEnemies.length === 0) return;
 
-        let find = false;
+        // 3. Buscamos un proyectil que esté libre en la "pool" (inactivo)
+        const attack = this.attacks.get().getChildren().find(a => !a.active);
+        if (!attack) return;
 
-        this.enemies.get().children.iterate(enemy => {
+        // 4. Elegimos un enemigo al azar para que realice el disparo
+        const randomEnemy = Phaser.Utils.Array.GetRandom(activeEnemies);
 
-            if(enemy.body.enable){
+        this.configureEnemyAttack(attack, randomEnemy);
 
-                this.attacks.get().getChildren().forEach(attack => {
-
-                    if( Phaser.Math.Between(0, 999) < 20 && this.time.now > this.attacks.rhythm.flag ){
-
-                        find = true;
-
-                        this.configureEnemyAttack(attack, enemy);
-
-                        this.tweens.add({
-                          targets: enemy,
-                          angle: 360,
-                          duration: 300,
-                          yoyo: true
-                        });
-
-                        this.die_throw.play();
-
-                        this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
-
-                    }
-
-                });
-
-            }
-
+        this.tweens.add({
+            targets: randomEnemy,
+            angle: 360,
+            duration: 300,
+            yoyo: true
         });
 
+        this.die_throw.play();
+        this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
     }
 
     configureEnemyAttack(attack, enemy){
@@ -284,8 +259,7 @@ export class Game extends Phaser.Scene {
       //console.log('[COLISIÓN] Enemigo tipo:', type);
       //console.log('[COLISIÓN] Enemigo puntaje:', score);
 
-      Settings.setPoints(Settings.getPoints() + score);
-      this.scoreboard.updatePoints(Settings.getPoints());
+      this.registry.set('points', this.registry.get('points') + score);
 
       this.particles.spawn(enemy.x, enemy.y);
       this.explosions.spawn(enemy.x, enemy.y, this.explosion_sound);
@@ -298,8 +272,10 @@ export class Game extends Phaser.Scene {
       if (Settings.getLives() > 0 && this.enemies.get().countActive(true) === 0) {
         this.time.delayedCall(1000, () => {
           if (Settings.isLastLevel()) {
+            Settings.setPoints(this.registry.get('points'));
             this.scene.start('victory');
           } else {
+            Settings.setPoints(this.registry.get('points'));
             this.scene.start('levelpassed');
           }
         });
@@ -309,15 +285,13 @@ export class Game extends Phaser.Scene {
 
     damagePlayer(player) {
 
-     // Reducir vidas y actualizar HUD
-      Settings.setLives(Settings.getLives() - 1);
-      this.livesDisplay.removeOneLife();
+      // Reducir vidas en el Registry
+      const currentLives = this.registry.get('lives') - 1;
+      this.registry.set('lives', currentLives);
+      Settings.setLives(currentLives); // Mantenemos Settings actualizado para gameover/victory
 
       // Quitar el Power UP
-      Bullets.MAXIMUM_NUMBER_OF_BULLETS = 1;
-      this.bullets.recreate();
-      this.registerBulletCollision();
-      this.bullets.rhythm.bullets = 200;
+      this.bullets.resetPowerUp();
 
       // Ocultar jugador
       player.setActive(false).setVisible(false).disableBody(true, true);
@@ -327,7 +301,8 @@ export class Game extends Phaser.Scene {
       this.explosions.spawn(player.x, player.y, this.explosion_sound);
 
       // Verificar si ya no tiene vidas
-      if (Settings.getLives() <= 0) {
+      if (currentLives <= 0) {
+        Settings.setPoints(this.registry.get('points'));
         this.time.delayedCall(1000, () => this.scene.start('gameover'));
         return;
       }
@@ -355,21 +330,7 @@ export class Game extends Phaser.Scene {
     powerup.setVisible(false);
     powerup.body.enable = false;
 
-    Bullets.MAXIMUM_NUMBER_OF_BULLETS = 4;
-    this.bullets.recreate();
-    this.registerBulletCollision();
-    this.bullets.rhythm.bullets = 400;
-  }
-
-  registerBulletCollision() {
-
-    this.physics.add.overlap(
-      this.enemies.get(),
-      this.bullets.get(),
-      this.handleBulletHitsEnemy,
-      null,
-      this
-    );
+    this.bullets.upgradePowerUp();
   }
 
 }

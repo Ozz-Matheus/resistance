@@ -9,9 +9,6 @@ export class Player {
 
   constructor(scene) {
     this.relatedScene = scene;
-    this._onResize = null;
-    this._vvHandler = null;
-    this._vvScrollHandler = null;
   }
 
   create() {
@@ -33,26 +30,17 @@ export class Player {
     // posición segura inicial (encima de los pads)
     this.reposition();
 
-    // listeners para cambios de viewport/toolbar
-    if (!this._onResize) {
-      this._onResize = () => this.reposition();
-      this.relatedScene.scale.on('resize', this._onResize);
+    // Reposicionamiento en caso de redimensión (ej. aparecer barra de navegación en iOS)
+    const handleResize = () => this.reposition();
 
-      this.relatedScene.events.once('shutdown', () => {
-        this.relatedScene.scale.off('resize', this._onResize);
-        window.visualViewport?.removeEventListener('resize', this._vvHandler);
-        window.visualViewport?.removeEventListener('scroll', this._vvScrollHandler);
-        this._onResize = this._vvHandler = this._vvScrollHandler = null;
-      });
-    }
-    if (window.visualViewport && !this._vvHandler) {
-      this._vvHandler = () => this.reposition();
-      window.visualViewport.addEventListener('resize', this._vvHandler, { passive: true });
-    }
-    if (window.visualViewport && !this._vvScrollHandler) {
-      this._vvScrollHandler = () => this.reposition();
-      window.visualViewport.addEventListener('scroll', this._vvScrollHandler, { passive: true });
-    }
+    this.relatedScene.scale.on('resize', handleResize);
+    this.relatedScene.game.events.on('viewport-changed', handleResize);
+
+    this.relatedScene.events.once('shutdown', () => {
+      this.relatedScene.scale.off('resize', handleResize);
+      this.relatedScene.game.events.off('viewport-changed', handleResize);
+    });
+
   }
 
   // coloca el centro del player siempre por encima del borde superior de los pads

@@ -12,9 +12,6 @@ export class VirtualGamepad {
     this.radius = 50;
     this.properties = { inUse: false, left: false, right: false, x: 0 };
     this.center = new Phaser.Math.Vector2(0, 0);
-    this._onResize = null;
-    this._vvHandler = null;
-    this._vvScrollHandler = null;
   }
 
   setCenter(x, y) {
@@ -73,40 +70,21 @@ export class VirtualGamepad {
           .setPosition(this.center.x, this.center.y)
           .setDisplaySize(padSize, padSize);
       }
+
+
     };
 
     place();
 
-    if (!this._onResize) {
-      this._onResize = () => place();
-      this.scene.scale.on('resize', this._onResize);
+    // Escuchar eventos limpios de Phaser
+    this.scene.scale.on('resize', place);
+    this.scene.game.events.on('viewport-changed', place);
 
-      this.scene.events.once('shutdown', () => {
-        this.scene.scale.off('resize', this._onResize);
+    this.scene.events.once('shutdown', () => {
+      this.scene.scale.off('resize', place);
+      this.scene.game.events.off('viewport-changed', place);
+    });
 
-        if (this._vvHandler) {
-          window.visualViewport?.removeEventListener('resize', this._vvHandler);
-          this._vvHandler = null;
-        }
-        if (this._vvScrollHandler) {
-          window.visualViewport?.removeEventListener('scroll', this._vvScrollHandler);
-          this._vvScrollHandler = null;
-        }
-
-        this._onResize = null;
-      });
-    }
-
-    if (window.visualViewport && !this._vvHandler) {
-      this._vvHandler = () => this._onResize && this._onResize();
-      window.visualViewport.addEventListener('resize', this._vvHandler, { passive: true });
-    }
-
-    // 👇 nuevo para Chrome iOS
-    if (window.visualViewport && !this._vvScrollHandler) {
-      this._vvScrollHandler = () => this._onResize && this._onResize();
-      window.visualViewport.addEventListener('scroll', this._vvScrollHandler, { passive: true });
-    }
   }
 
   onPointerUp(pointer) {
