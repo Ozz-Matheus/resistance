@@ -4,8 +4,8 @@ export class Settings {
   static points = 0;
   static level = 1;
   static lives = 3;
-  static record = 20000;
-  static max_level = 3;
+  static record = 48000;
+  static max_level = 4;
 
 
   static getPoints() {

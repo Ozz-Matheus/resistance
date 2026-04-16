@@ -17,14 +17,15 @@ export class PowerUps {
     });
   }
 
-  spawn(x, y) {
-    const powerup = this.group.getChildren().find(p => !p.active && !p.visible);
-    if (powerup) {
-      powerup.setPosition(x, y);
-      powerup.setActive(true).setVisible(true);
-      powerup.enableBody(true, x, y, true, true);
-      powerup.setVelocityY(100);
-    }
+  spawn(x, y, level) {
+      const powerup = this.group.getChildren().find(p => !p.active && !p.visible);
+      if (powerup) {
+          powerup.setTexture(`powerup-${level}`); // Cambia el sprite según el nivel
+          powerup.setPosition(x, y);
+          powerup.setActive(true).setVisible(true);
+          powerup.enableBody(true, x, y, true, true);
+          powerup.setVelocityY(100);
+      }
   }
 
   get() {

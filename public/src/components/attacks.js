@@ -8,7 +8,7 @@ import { Settings } from '../settings.js';
 
 export class Attacks {
 
-	static MAXIMUM_NUMBER_OF_ATTACKS = 10;
+	static MAXIMUM_NUMBER_OF_ATTACKS = 20;
 
     constructor(scene) {
         this.relatedScene = scene;

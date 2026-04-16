@@ -1,4 +1,4 @@
-// src/components/enemies.js
+ // src/components/enemies.js
 
 import { Settings } from '../settings.js';
 import { hudLayout } from '../utils/hudLayout.js';
@@ -13,46 +13,41 @@ export class Enemies {
 
     create() {
       const level = this.relatedScene.registry.get('level') || 1;
-      const [mainCount, secondaryCount] = level === 1 ? [24, 24] : [36, 36];
+      const enemyKey = `enemies-${level}`;
+      const [mainCount, secondaryCount] = (level === 1 || level === 4) ? [24, 24] : [36, 36];
 
       this.enemies = this.relatedScene.physics.add.group();
 
       // Crear main-enemies
       for (let i = 0; i < mainCount; i++) {
-        const enemy = this.enemies.create(0, 0, 'main-enemies');
+        const enemy = this.enemies.create(0, 0, enemyKey);
         enemy.setData('type', 'main');
       }
 
-      // Crear secondary-enemies
+      // Crear secondary-enemies usando la misma textura del nivel
       for (let i = 0; i < secondaryCount; i++) {
-        const enemy = this.enemies.create(0, 0, 'secondary-enemies');
+        const enemy = this.enemies.create(0, 0, enemyKey);
         enemy.setData('type', 'secondary');
       }
 
-      // Animaciones (protegidas para no duplicar)
+      // Animación dinámica basada en el nivel actual
       const anims = this.relatedScene.anims;
-      if (!anims.exists('main-enemies-animation')) {
+      const animKey = `enemy-anim-${level}`;
+
+      if (!anims.exists(animKey)) {
         anims.create({
-          key: 'main-enemies-animation',
-          frames: anims.generateFrameNumbers('main-enemies', { frames: [0, 1, 2] }),
-          frameRate: 5,
-          repeat: -1,
-        });
-      }
-      if (!anims.exists('secondary-enemies-animation')) {
-        anims.create({
-          key: 'secondary-enemies-animation',
-          frames: anims.generateFrameNumbers('secondary-enemies', { frames: [0, 1, 2] }),
+          key: animKey,
+          frames: anims.generateFrameNumbers(enemyKey, { frames: [0, 1, 2] }),
           frameRate: 5,
           repeat: -1,
         });
       }
 
-      // Escala y animación ANTES del grid (para calcular tamaños reales)
+      // Escala y animación
       this.enemies.getChildren().forEach(enemy => {
         enemy.setScale(0.38).setAngle(350).setDepth(2);
         enemy.setData('score', enemy.getData('type') === 'main' ? 100 : 250);
-        enemy.play(enemy.getData('type') === 'main' ? 'main-enemies-animation' : 'secondary-enemies-animation');
+        enemy.play(animKey);
       });
 
       // Centrar y subir un poco (12 cols) usando el ancho REAL del sprite
@@ -65,16 +60,24 @@ export class Enemies {
       const totalSpan = dw + (cols - 1) * cellW;
       const startX = Math.round((W - totalSpan) / 2 + dw / 2);
 
-      // más arriba en móviles (sin pegar al HUD)
-      const top = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
+
+
+      // Posición base
+      let gridTop = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
+
+      // Si es nivel 4, empujamos a los enemigos normales 120px hacia abajo
+      if (level === 4) {
+          gridTop += 120;
+      }
 
       Phaser.Actions.GridAlign(this.enemies.getChildren(), {
         width: cols,
         cellWidth: cellW,
         cellHeight: 64,
         x: -64,
-        y: top,
+        y: gridTop, // Usamos la nueva variable aquí
       });
+
 
       // Movimiento horizontal en formación
       this.formation = {
@@ -101,10 +104,29 @@ export class Enemies {
       // ------------------------------
 
       const enemies = this.enemies.getChildren();
-      let descendingEnemies = enemies;
+
+      let descendingEnemies = enemies.filter(e => e.getData('type') !== 'boss');
+
       if (level === 1) {
-        descendingEnemies = enemies.slice(24); // solo los secundarios descienden en nivel 1
+        descendingEnemies = descendingEnemies.slice(24); // solo los secundarios descienden en nivel 1
       }
+
+      // --- CÓDIGO NUEVO PARA EL BOSS ---
+
+      if (level === 4) {
+        // Obtenemos el top original para posicionar al Boss
+        const top = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
+
+        // top + 50 lo despegará de los textos de Puntos/Nivel
+        const boss = this.enemies.create(W / 2, top + 50, 'boss-4');
+        boss.setData('type', 'boss');
+        boss.setData('score', 1500);
+        boss.setData('hp', 60);
+        boss.setScale(0.8);
+        boss.setDepth(2);
+      }
+
+      // ---------------------------------
 
       this.relatedScene.tweens.add({
         targets: descendingEnemies,

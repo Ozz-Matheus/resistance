@@ -18,12 +18,24 @@ scene.load.image('red-star','./src/images/red-star.png');
 
 scene.load.image('player', './src/images/player.png');
 scene.load.spritesheet('lasers', './src/images/lasers.png', {frameWidth: 32, frameHeight: 65});
-scene.load.spritesheet('main-enemies', './src/images/main-enemies.png', {frameWidth: 135, frameHeight: 95});
-scene.load.spritesheet('secondary-enemies', './src/images/secondary-enemies.png', { frameWidth: 135, frameHeight: 95 });
+
 scene.load.spritesheet('explosion', './src/images/explosion.png', {frameWidth: 32, frameHeight: 32});
 scene.load.spritesheet('flames', './src/images/flames.png', {frameWidth: 18, frameHeight: 39});
 scene.load.image('particle', './src/images/particle.png');
-scene.load.image('powerup-icon', './src/images/powerup-icon.png');
+
+
+// Enemigos por nivel
+scene.load.spritesheet('enemies-1', './src/images/enemies-yellow.png', {frameWidth: 135, frameHeight: 95});
+scene.load.spritesheet('enemies-2', './src/images/enemies-orange.png', {frameWidth: 135, frameHeight: 95});
+scene.load.spritesheet('enemies-3', './src/images/enemies-red.png', {frameWidth: 135, frameHeight: 95});
+scene.load.spritesheet('enemies-4', './src/images/enemies-white.png', {frameWidth: 135, frameHeight: 95});
+scene.load.spritesheet('boss-4', './src/images/boss-black.png', {frameWidth: 192, frameHeight: 160});
+
+// Power ups por nivel (opcional si diseño te da iconos distintos)
+scene.load.image('powerup-1', './src/images/powerup-shots.png');
+scene.load.image('powerup-2', './src/images/powerup-shield.png');
+scene.load.image('powerup-3', './src/images/powerup-slow.png');
+scene.load.image('powerup-4', './src/images/powerup-speed.png');
 
 
 scene.load.spritesheet('virtual-gamepad', './src/images/gamepad_spritesheet.png', {

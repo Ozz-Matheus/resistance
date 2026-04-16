@@ -175,20 +175,46 @@ export class Game extends Phaser.Scene {
 
     handleBulletHitsEnemy(enemies, bullets) {
 
+        // Desactivamos la bala siempre
+        bullets.setActive(false).setVisible(false).disableBody(true, true);
+
+        // Si es el Boss, le restamos vida
+        if (enemies.getData('type') === 'boss') {
+            let hp = enemies.getData('hp') - 1;
+            enemies.setData('hp', hp);
+
+            // Cambiar el frame de daño según la vida restante (asumiendo 80 HP iniciales)
+            if (hp <= 20) {
+                enemies.setFrame(3);
+            } else if (hp <= 40) {
+                enemies.setFrame(2);
+            } else if (hp <= 60) {
+                enemies.setFrame(1);
+            }
+
+            // Efecto de daño visual rápido
+            enemies.setTint(0xff0000);
+            this.time.delayedCall(100, () => enemies.clearTint());
+            this.explosions.spawn(bullets.x, bullets.y, this.explosion_sound);
+
+            if (hp > 0) return;
+        }
+
+        // Si no es Boss, o si el Boss llegó a 0 de vida, aplicamos la muerte normal
         this.explosions.spawn(enemies.x, enemies.y, this.explosion_sound);
 
         const score = enemies.getData('score') ?? 100;
         this.registry.set('points', this.registry.get('points') + score);
 
-        bullets.setActive(false).setVisible(false).disableBody(true, true);
         enemies.setActive(false).setVisible(false).disableBody(true, true);
-
         this.particles.spawn(enemies.x, enemies.y);
 
         if (Phaser.Math.Between(0, 100) < Game.DROP_RATE_POWERUP_PERCENTAGE) {
-          this.powerups.spawn(enemies.x, enemies.y);
+          const currentLevel = this.registry.get('level') || 1;
+          this.powerups.spawn(enemies.x, enemies.y, currentLevel);
         }
 
+        // Validación de fin de nivel
         if (this.enemies.get().countActive(true) === 0) {
           this.time.delayedCall(1000, () => {
             if (Settings.isLastLevel()) {
@@ -212,30 +238,44 @@ export class Game extends Phaser.Scene {
         const activeEnemies = this.enemies.get().getChildren().filter(e => e.active);
         if (activeEnemies.length === 0) return;
 
-        // 3. Buscamos un proyectil que esté libre en la "pool" (inactivo)
-        const attack = this.attacks.get().getChildren().find(a => !a.active);
-        if (!attack) return;
-
-        // 4. Elegimos un enemigo al azar para que realice el disparo
+        // Elegimos un enemigo al azar para que realice el disparo
         const randomEnemy = Phaser.Utils.Array.GetRandom(activeEnemies);
 
-        this.configureEnemyAttack(attack, randomEnemy);
+        const isBoss = randomEnemy.getData('type') === 'boss';
 
-        this.tweens.add({
-            targets: randomEnemy,
-            angle: 360,
-            duration: 300,
-            yoyo: true
+        // El Boss dispara 3, los normales 1
+        const bulletsToFire = isBoss ? 3 : 1;
+        let bulletsFired = 0;
+
+        this.attacks.get().getChildren().forEach(attack => {
+            if (!attack.active && bulletsFired < bulletsToFire) {
+                bulletsFired++;
+
+                // Si es el Boss, calculamos un desfase: -40, 0, +40 px
+                const offsetX = isBoss ? 40 * (bulletsFired - 2) : 0;
+
+                this.configureEnemyAttack(attack, randomEnemy, offsetX);
+            }
         });
 
-        this.die_throw.play();
-        this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
+        if (bulletsFired > 0) {
+            this.tweens.add({
+                targets: randomEnemy,
+                angle: 360,
+                duration: 300,
+                yoyo: true
+            });
+
+            this.die_throw.play();
+            this.attacks.rhythm.flag = this.time.now + this.attacks.rhythm.attacks;
+        }
     }
 
-    configureEnemyAttack(attack, enemy){
+    configureEnemyAttack(attack, enemy, offsetX = 0){
 
         attack.setActive(true).setVisible(true);
-        attack.enableBody(true, enemy.x, enemy.y,true, true);
+        // Sumamos el offsetX a la posición del enemigo
+        attack.enableBody(true, enemy.x + offsetX, enemy.y, true, true);
         attack.setScale(0.8);
 
         const level = this.registry.get('level') || 1;
@@ -246,12 +286,17 @@ export class Game extends Phaser.Scene {
     }
 
     onAttackHitPlayer(attack, player) {
+
+      if (player.getData('isImmune')) return;
+
       // Desactivar ataque enemigo
       attack.setActive(false).setVisible(false).disableBody(true, true);
       this.damagePlayer(player);
     }
 
     onEnemyHitPlayer(player, enemy) {
+
+      if (player.getData('isImmune')) return;
 
       const type = enemy.getData('type');
       const score = enemy.getData('score') ?? 100;
@@ -325,12 +370,58 @@ export class Game extends Phaser.Scene {
     }
 
   handlePowerUpPickup(player, powerup) {
+      powerup.setActive(false).setVisible(false).disableBody(true, true);
 
-    powerup.setActive(false);
-    powerup.setVisible(false);
-    powerup.body.enable = false;
+      const level = this.registry.get('level') || 1;
 
-    this.bullets.upgradePowerUp();
+      switch(level) {
+          case 1:
+              // N1 - 3 disparos (Modificas tu componente bullets.js para permitir 3)
+              this.bullets.activeLimit = 3;
+              break;
+
+          case 2:
+              // N2 - Inmunidad 10 segundos
+              player.setData('isImmune', true);
+              player.setTint(0x00ff00); // Feedback visual
+              this.time.delayedCall(10000, () => {
+                  player.setData('isImmune', false);
+                  player.clearTint();
+              });
+              break;
+
+          case 3:
+              // N3 - Ralentiza naves y disparos 10 Segundos
+              this.enemies.formation.SPEED_ON_THE_X_AXIS *= 0.5; // Ralentiza enemigos
+              this.attacks.rhythm.attacks *= 2; // Disparan más lento
+
+              this.time.delayedCall(10000, () => {
+                  this.enemies.formation.SPEED_ON_THE_X_AXIS *= 2; // Vuelve a la normalidad
+                  this.attacks.rhythm.attacks /= 2;
+              });
+              break;
+
+          case 4:
+              // N4 - Velocidad X2 y parpadeo
+              const originalSpeed = player.getData('vel-x');
+              player.setData('vel-x', originalSpeed * 2);
+
+              // Efecto parpadeo
+              const blink = this.tweens.add({
+                  targets: player,
+                  alpha: 0.2,
+                  yoyo: true,
+                  repeat: -1,
+                  duration: 200
+              });
+
+              this.time.delayedCall(10000, () => {
+                  player.setData('vel-x', originalSpeed);
+                  blink.stop();
+                  player.setAlpha(1);
+              });
+              break;
+      }
   }
 
 }
