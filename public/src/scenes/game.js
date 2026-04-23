@@ -95,7 +95,7 @@ export class Game extends Phaser.Scene {
           this.attacks.get(),
           this.player.get(),
           this.onAttackHitPlayer,
-          (attack, player) => player.alpha >= 1,
+          (player, attack) => player.alpha >= 1 && !player.getData('isImmune'),
           this
         );
 
@@ -103,7 +103,7 @@ export class Game extends Phaser.Scene {
           this.enemies.get(),
           this.player.get(),
           this.onEnemyHitPlayer,
-          (enemy, player) => player.alpha >= 1,
+          (player, enemy) => player.alpha >= 1 && !player.getData('isImmune'),
           this
         );
 
@@ -243,8 +243,8 @@ export class Game extends Phaser.Scene {
 
         const isBoss = randomEnemy.getData('type') === 'boss';
 
-        // El Boss dispara 3, los normales 1
-        const bulletsToFire = isBoss ? 3 : 1;
+        // El Boss dispara 4, los normales 1
+        const bulletsToFire = isBoss ? 4 : 1;
         let bulletsFired = 0;
 
         this.attacks.get().getChildren().forEach(attack => {
