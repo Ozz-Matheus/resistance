@@ -6,8 +6,23 @@
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>{{ config('app.name') }}</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="icon" type="image/png" href="{{ asset('assets/favicon.png')}}"  />
+  <link rel="icon" type="image/png" href="{{ asset('favicon/ico.png')}}"  />
   <style>
+    /* STAR JEDI (titulos) */
+    @font-face {
+        font-family: 'StarJedi';
+        src: url('{{ asset('src/fonts/Starjedi.woff2') }}') format('woff2'),
+            url('{{ asset('src/fonts/Starjedi.woff') }}') format('woff');
+        font-display: swap;
+    }
+
+    /* BEBAS NEUE (parrafos) */
+    @font-face {
+        font-family: 'BebasNeue';
+        src: url('{{ asset('src/fonts/BebasNeue.woff2') }}') format('woff2'),
+            url('{{ asset('src/fonts/BebasNeue.woff') }}') format('woff');
+        font-display: swap;
+    }
     :root{
       --safe-top:    env(safe-area-inset-top, 0px);
       --safe-right:  env(safe-area-inset-right, 0px);
@@ -20,6 +35,7 @@
       height: 100dvh;
     }
     body{
+      font-family: 'BebasNeue', Arial, sans-serif;
       margin: 0;
       padding: 0;
       background: #000;

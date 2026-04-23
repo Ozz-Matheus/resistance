@@ -42,31 +42,37 @@ const config = {
   }
 };
 
-const game = new Phaser.Game(config);
+// --- APLICACIÓN DE CARGA DE FUENTES ---
+// Esperamos a que el navegador termine de cargar las fuentes web antes de iniciar Phaser
+document.fonts.ready.then(() => {
 
-// Función utilitaria para evitar saturar el procesador
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
+    const game = new Phaser.Game(config);
+
+    // Función utilitaria para evitar saturar el procesador
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
             clearTimeout(timeout);
-            func(...args);
+            timeout = setTimeout(later, wait);
         };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+    }
 
-// Aplicamos el debounce (100ms de espera)
-const onResize = debounce(() => game.scale.refresh(), 100);
-window.addEventListener('resize', onResize);
+    // Aplicamos el debounce (100ms de espera)
+    const onResize = debounce(() => game.scale.refresh(), 100);
+    window.addEventListener('resize', onResize);
 
-if (window.visualViewport) {
-    const onViewportChange = debounce(() => {
-        game.scale.refresh();
-        game.events.emit('viewport-changed');
-    }, 100);
+    if (window.visualViewport) {
+        const onViewportChange = debounce(() => {
+            game.scale.refresh();
+            game.events.emit('viewport-changed');
+        }, 100);
 
-    window.visualViewport.addEventListener('resize', onViewportChange, { passive: true });
-    window.visualViewport.addEventListener('scroll', onViewportChange, { passive: true });
-}
+        window.visualViewport.addEventListener('resize', onViewportChange, { passive: true });
+        window.visualViewport.addEventListener('scroll', onViewportChange, { passive: true });
+    }
+
+});

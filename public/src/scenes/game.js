@@ -383,7 +383,7 @@ export class Game extends Phaser.Scene {
           case 2:
               // N2 - Inmunidad 10 segundos
               player.setData('isImmune', true);
-              player.setTint(0x00ff00); // Feedback visual
+              player.setTint(0xffff00); // Feedback visual
               this.time.delayedCall(10000, () => {
                   player.setData('isImmune', false);
                   player.clearTint();
