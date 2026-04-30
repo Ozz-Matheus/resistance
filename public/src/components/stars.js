@@ -57,9 +57,9 @@ export class Stars {
 
 		Object.keys(this.stars).forEach(starType => {
 			this.stars[starType].getChildren().forEach(star => {
-		            if (star.y > this.relatedScene.sys.game.config.height * 1.1) {
+		            if (star.y > this.relatedScene.scale.height * 1.1) {
 		            star.setY(Stars.APPEAR_ABOVE);
-		            star.setX(Phaser.Math.Between(0, this.relatedScene.sys.game.config.width));
+		            star.setX(Phaser.Math.Between(0, this.relatedScene.scale.width));
 		        }
 		    });
 		});
@@ -70,8 +70,8 @@ export class Stars {
 	initialize(star) {
 	    star.setScale(Stars.INITIAL_SCALE + Phaser.Math.FloatBetween(0, 0.12));
 	    star.setVelocityY(Phaser.Math.FloatBetween(5, 50));
-	    star.setX(Phaser.Math.Between(0, this.relatedScene.sys.game.config.width));
-	    star.setY(Phaser.Math.Between(0, this.relatedScene.sys.game.config.height));
+	    star.setX(Phaser.Math.Between(0, this.relatedScene.scale.width));
+	    star.setY(Phaser.Math.Between(0, this.relatedScene.scale.height));
 	}
 
 

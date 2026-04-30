@@ -81,8 +81,17 @@ export class VirtualGamepad {
     this.scene.game.events.on('viewport-changed', place);
 
     this.scene.events.once('shutdown', () => {
+      // 1. Apagamos los eventos de redimensión
       this.scene.scale.off('resize', place);
       this.scene.game.events.off('viewport-changed', place);
+      
+      // 2. NUEVO: Apagamos los eventos globales del input para evitar fugas de memoria
+      this.scene.input.off('pointerdown');
+      this.scene.input.off('pointerup', this.onPointerUp, this);
+      this.scene.input.off('pointermove', this.onPointerMove, this);
+      
+      // 3. Limpiamos la referencia del puntero
+      this.joystickPointer = null;
     });
 
   }

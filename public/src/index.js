@@ -10,16 +10,22 @@ import { EnemyIntroScene } from './scenes/enemyintro.js';
 import { LevelPassedScene } from './scenes/levelpassed.js';
 import { StartScene } from './scenes/start.js';
 
-const BASE_WIDTH = 390;
-const BASE_HEIGHT = 844;
 const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+//  Tamaño dinámico real desde el inicio
+const getGameSize = () => ({
+  width: window.innerWidth,
+  height: window.innerHeight,
+});
 
 const config = {
   type: Phaser.AUTO,
   backgroundColor: '#000000',
-  width: BASE_WIDTH,
-  height: BASE_HEIGHT,
+
+  ...getGameSize(),
+
   resolution: DPR,
+
   scene: [
     StartScene,
     MainMenu,
@@ -31,50 +37,60 @@ const config = {
     VictoryScreen,
     LevelPassedScene
   ],
+
   physics: {
     default: 'arcade',
     arcade: {
       debug: false
     }
   },
+
   scale: {
-    mode: Phaser.Scale.FIT,
+    mode: Phaser.Scale.RESIZE,
+    parent: document.body,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    expandParent: true,
+  },
+
+  render: {
+    antialias: true,
+    pixelArt: false,
   }
 };
 
-// --- APLICACIÓN DE CARGA DE FUENTES ---
-// Esperamos a que el navegador termine de cargar las fuentes web antes de iniciar Phaser
+// --- ESPERAR FUENTES ---
 document.fonts.ready.then(() => {
 
-    const game = new Phaser.Game(config);
+  const game = new Phaser.Game(config);
 
-    // Función utilitaria para evitar saturar el procesador
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
+  //  debounce simple
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
 
-    // Aplicamos el debounce (100ms de espera)
-    const onResize = debounce(() => game.scale.refresh(), 100);
-    window.addEventListener('resize', onResize);
+  //  Resize principal
+  const handleResize = debounce(() => {
+    const { width, height } = getGameSize();
+    game.scale.resize(width, height);
+  }, 100);
 
-    if (window.visualViewport) {
-        const onViewportChange = debounce(() => {
-            game.scale.refresh();
-            game.events.emit('viewport-changed');
-        }, 100);
+  window.addEventListener('resize', handleResize);
 
-        window.visualViewport.addEventListener('resize', onViewportChange, { passive: true });
-        window.visualViewport.addEventListener('scroll', onViewportChange, { passive: true });
-    }
+  //  Soporte móvil (teclado, barras, etc.)
+  if (window.visualViewport) {
+    const handleViewport = debounce(() => {
+      const width = window.visualViewport.width;
+      const height = window.visualViewport.height;
+
+      game.scale.resize(width, height);
+      game.events.emit('viewport-changed');
+    }, 100);
+
+    window.visualViewport.addEventListener('resize', handleViewport, { passive: true });
+    window.visualViewport.addEventListener('scroll', handleViewport, { passive: true });
+  }
 
 });
