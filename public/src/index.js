@@ -2,6 +2,7 @@
 
 import { Game } from './scenes/game.js';
 import { MainMenu } from './scenes/mainmenu.js';
+import { ControlsPowers } from './scenes/controlspowers.js';
 import { GameOver } from './scenes/gameover.js';
 import { VictoryScreen } from './scenes/victory.js';
 import { PreLevelScene } from './scenes/prelevel.js';
@@ -22,6 +23,7 @@ const config = {
   scene: [
     StartScene,
     MainMenu,
+    ControlsPowers,
     PreLevelScene,
     EnemyIntroScene,
     Game,

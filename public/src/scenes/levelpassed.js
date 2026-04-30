@@ -18,34 +18,35 @@ export class LevelPassedScene extends Phaser.Scene {
   }
 
   create() {
-
-    const { body } = fontScale(this);
-
+    const { md } = fontScale(this);
     const { width, height } = this.sys.game.config;
 
     createBackground(this, -10);
-
     SoundManager.playMusic(this, 'level-passed', { loop: false, volume: 0.6 });
 
     this.stars.create();
 
-    const heading = this.add.text(width / 2, height / 3, Texts.levelPassed, {
-      fontSize: `${body}px`,
-      fontStyle: 'bold',
+    const currentLevel = Settings.getLevel();
+    const passMsg = Texts.levelPassedMsg[currentLevel] || "Nivel superado";
+
+    const heading = this.add.text(width / 2, height / 2, passMsg, {
+      fontSize: `${md}px`,
+      align: 'center',
+      wordWrap: { width: width * 0.95, useAdvancedWrap: true },
       ...TextStyles.success
     }).setOrigin(0.5).setAlpha(0);
+
+    Settings.setLevel(currentLevel + 1);
 
     this.tweens.add({
       targets: heading,
       alpha: 1,
-      yoyo: true,
-      duration: 1500
+      duration: 1500,
+      hold: 3000,
+      yoyo: true
     });
 
-    // Subir de nivel
-    Settings.setLevel(Settings.getLevel() + 1);
-
-    this.time.delayedCall(3500, () => {
+    this.time.delayedCall(6000, () => {
       this.sound.stopAll();
       this.scene.start('prelevel');
     });

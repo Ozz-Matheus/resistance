@@ -11,21 +11,27 @@ export class StartScene extends Phaser.Scene {
     super({ key: 'start' });
   }
 
-	preload() {
-		loader(this);
-	}
+  preload() {
+    loader(this);
+  }
 
   create() {
-
-    const { body } = fontScale(this);
-
+    const { body, md } = fontScale(this);
     const { width, height } = this.sys.game.config;
 
-    this.add.rectangle(0, 0, width, height, 0x000000).setOrigin(0); // fondo negro
+    this.add.rectangle(0, 0, width, height, 0x000000).setOrigin(0);
 
-    this.add.text(width / 2, height / 2, Texts.start, {
-      fontSize: `${body}px`,
+    // Historia con wordWrap
+    this.add.text(width / 2, height * 0.4, Texts.startStory, {
+      fontSize: `${md}px`,
+      align: 'center',
+      wordWrap: { width: width * 0.95, useAdvancedWrap: true },
       ...TextStyles.base
+    }).setOrigin(0.5);
+
+    this.add.text(width / 2, height * 0.75, Texts.start, {
+      fontSize: `${body}px`,
+      ...TextStyles.success
     }).setOrigin(0.5);
 
     this.input.once('pointerdown', () => {

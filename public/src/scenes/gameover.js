@@ -12,29 +12,34 @@ export class GameOver extends Phaser.Scene {
     }
 
     create() {
-
-        const { title, sm } = fontScale(this);
-
+        const { md, sm } = fontScale(this);
         const { width, height } = this.sys.game.config;
 
         createBackground(this, -10);
-
         SoundManager.playMusic(this, 'gameover-music', { loop: false, volume: 0.6 });
 
-        this.add.text(width / 2, height / 2, Texts.gameOver, {
-            fontSize: `${title}px`,
-            fontStyle: 'bold',
+        const currentLevel = Settings.getLevel();
+        const gameOverMsg = Texts.gameOverMsg[currentLevel] || "Fin del juego";
+
+        this.add.text(width / 2, height * 0.45, gameOverMsg, {
+            fontSize: `${md}px`,
+            align: 'center',
+            wordWrap: { width: width * 0.95, useAdvancedWrap: true },
             ...TextStyles.danger
         }).setOrigin(0.5);
 
         if (Settings.getPoints() >= Settings.getRecord() * 0.9) {
-          this.add.text(width / 2, height / 2 - 60, Texts.almostRecord, {
+          this.add.text(width / 2, height * 0.25, Texts.almostRecord, {
             fontSize: `${sm}px`,
             ...TextStyles.success
           }).setOrigin(0.5);
         }
 
-        // Mostrar form para guardar Puntaje
+        this.add.text(width / 2, height * 0.75, Texts.retry, {
+            fontSize: `${md}px`,
+            ...TextStyles.base
+        }).setOrigin(0.5);
+
         const score = Settings.getPoints();
         if (window.showPlayerScoreForm) {
           window.showPlayerScoreForm(score);

@@ -12,41 +12,48 @@ export class VictoryScreen extends Phaser.Scene {
     }
 
   create() {
-
-    const { title, body, md, sm } = fontScale(this);
-
+    const { title, md, sm } = fontScale(this);
     const { width, height } = this.sys.game.config;
 
     createBackground(this, -10);
-
     SoundManager.playMusic(this, 'victory-music', { loop: false, volume: 0.6 });
 
-    this.add.text(width / 2, height / 3, Texts.victory, {
+    this.add.text(width / 2, height * 0.15, Texts.victoryTitle, {
       fontSize: `${title}px`,
       fontStyle: 'bold',
       ...TextStyles.success
     }).setOrigin(0.5);
 
-    this.add.text(width / 2, height / 2, Texts.score(Settings.getPoints()), {
+    this.add.text(width / 2, height * 0.40, Texts.victoryDesc, {
       fontSize: `${md}px`,
+      align: 'center',
+      wordWrap: { width: width * 0.95, useAdvancedWrap: true },
       ...TextStyles.base
     }).setOrigin(0.5);
 
-    this.add.text(width / 2, height / 2 + 50, Texts.record(Settings.getRecord()), {
+    this.add.text(width / 2, height * 0.65, Texts.score(Settings.getPoints()), {
       fontSize: `${sm}px`,
       ...TextStyles.base
     }).setOrigin(0.5);
 
+    this.add.text(width / 2, height * 0.72, Texts.record(Settings.getRecord()), {
+      fontSize: `${sm}px`,
+      ...TextStyles.base
+    }).setOrigin(0.5);
 
     if (Settings.getPoints() >= Settings.getRecord()) {
       Settings.setRecord(Settings.getPoints());
-      this.add.text(width / 2, height / 3 - 60, Texts.newRecord, {
-        fontSize: `${body}px`,
+      this.add.text(width / 2, height * 0.58, Texts.newRecord, {
+        fontSize: `${sm}px`,
         ...TextStyles.success
       }).setOrigin(0.5);
     }
 
-    // Mostrar form para guardar Puntaje
+    this.add.text(width / 2, height * 0.85, Texts.playAgain, {
+      fontSize: `${md}px`,
+      ...TextStyles.success
+    }).setOrigin(0.5);
+
     const score = Settings.getPoints();
     if (window.showPlayerScoreForm) {
       window.showPlayerScoreForm(score);
@@ -57,5 +64,4 @@ export class VictoryScreen extends Phaser.Scene {
       this.scene.start('mainmenu');
     });
   }
-
 }
