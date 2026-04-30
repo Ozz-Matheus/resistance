@@ -33,17 +33,28 @@
     html, body {
       width: 100vw;
       height: 100dvh;
+      font-family: 'BebasNeue', Arial, sans-serif;
     }
     body{
-      font-family: 'BebasNeue', Arial, sans-serif;
       margin: 0;
       padding: 0;
       background: #000;
       overflow: hidden;
       touch-action: none;
     }
-    input{ box-sizing: border-box }
     canvas{ display:block; border:none }
+    input{ box-sizing: border-box }
+    button{
+      background: #0bb83f;
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: 'BebasNeue', Arial, sans-serif;
+      border-radius: 2px;
+      margin-left: 2px;
+      margin-right: 2px;
+    }
   </style>
 </head>
 <body>
@@ -54,17 +65,17 @@
        display: none;
        align-items: center;
        justify-content: center;
-       background: rgba(0,0,0,.7);
+       background: rgba(0, 184, 63, 0.28);
        z-index: 9999;">
     <form id="player-score-form" style="
-          background: rgba(0,0,0,0.7);
+          background: rgba(0, 184, 63, 0.64);
           padding: 16px;
-          border-radius: 8px;
+          border-radius: 4px;
           max-width: 320px;
           width: 90%;
           color: #fff;
-          font-family: system-ui, sans-serif;">
-      <h2 style="margin-bottom: 12px;">Nuevo score</h2>
+          font-family: 'BebasNeue', Arial, sans-serif;">
+      <h2 style="margin-bottom: 12px;">Registra tu puntaje</h2>
 
       <label style="display:block; margin-bottom:8px;">
         Alias
@@ -162,7 +173,7 @@
 
           if (response.ok) {
             alreadySaved = true;
-            status.textContent = 'Score guardado. ¡Gracias!';
+            status.textContent = 'Puntaje guardado. ¡Gracias!';
             skip.textContent = 'Cerrar';
             submitBtn.disabled = true;
           } else {
