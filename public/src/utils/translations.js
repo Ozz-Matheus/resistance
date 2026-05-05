@@ -6,7 +6,7 @@ export const Texts = {
   start: "👉 Toca para iniciar",
   controlsTitle: "🎮 \t Controles \n Muévete para esquivar los villanos \n ⬅️ ➡️ \t Desplázate por la base \n ⏺️ \t Botón de disparo",
   powerUpsTitle: "🌟 \t Poderes No peleas solo.\n Los poderes de tus aliados \n — Las píldoras de la Resistencia \n — activan tus habilidades:",
-  powerUpsList: "🟡 \t Amarillo: Triple disparo \n 🟠 \t Naranja: Inmunidad temporal \n 🔴 \t Rojo: Ralentiza villanos \n ⚪️ \t Blanco: Duplica tu velocidad",
+  powerUpsList: "🟡 \t Amarillo: Triple disparo \n 🟠 \t Naranja: Inmunidad temporal \n 🔴 \t Rojo: Ralentiza villanos \n 🔵 \t Azul : Segunda oportunidad \n ⚪️ \t Blanco: Duplica tu velocidad",
   powerUpsFooter: "\n Cada poder cambia tu forma de resistir.\nCada batalla exige una estrategia distinta.",
   newGame: "👉 Comenzar misión", 
   loading: "cargando...",

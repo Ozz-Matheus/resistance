@@ -12,11 +12,16 @@ import { StartScene } from './scenes/start.js';
 
 const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-//  Tamaño dinámico real desde el inicio
-const getGameSize = () => ({
-  width: window.innerWidth,
-  height: window.innerHeight,
-});
+// Función auxiliar para determinar si superamos el límite
+const isDesktop = () => window.innerWidth > 800;
+
+// Obtenemos el tamaño respetando el límite
+const getGameSize = (w = window.innerWidth, h = window.innerHeight) => {
+  if (isDesktop()) {
+    return { width: 800, height: 600 };
+  }
+  return { width: w, height: h };
+};
 
 const config = {
   type: Phaser.AUTO,
@@ -46,7 +51,8 @@ const config = {
   },
 
   scale: {
-    mode: Phaser.Scale.RESIZE,
+    // Asignación dinámica inicial
+    mode: isDesktop() ? Phaser.Scale.FIT : Phaser.Scale.RESIZE,
     parent: document.body,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
@@ -74,7 +80,15 @@ document.fonts.ready.then(() => {
   //  Resize principal
   const handleResize = debounce(() => {
     const { width, height } = getGameSize();
+    const newMode = isDesktop() ? Phaser.Scale.FIT : Phaser.Scale.RESIZE;
+
+    // Si el usuario redimensiona la ventana y cruza el límite de los 800px, cambiamos el modo en caliente
+    if (game.scale.scaleMode !== newMode) {
+      game.scale.scaleMode = newMode;
+    }
+
     game.scale.resize(width, height);
+    game.scale.refresh(); // Fundamental para forzar a Phaser a recalcular el centrado tras cambiar el modo
   }, 100);
 
   window.addEventListener('resize', handleResize);
@@ -82,8 +96,10 @@ document.fonts.ready.then(() => {
   //  Soporte móvil (teclado, barras, etc.)
   if (window.visualViewport) {
     const handleViewport = debounce(() => {
-      const width = window.visualViewport.width;
-      const height = window.visualViewport.height;
+      const { width, height } = getGameSize(
+        window.visualViewport.width, 
+        window.visualViewport.height
+      );
 
       game.scale.resize(width, height);
       game.events.emit('viewport-changed');
