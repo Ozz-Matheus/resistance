@@ -3,9 +3,9 @@
 export class Settings {
   static points = 0;
   static level = 1;
-  static lives = 3;
+  static lives = 2;
   static record = 48000;
-  static max_level = 4;
+  static max_level = 5;
 
 
   static getPoints() {
@@ -47,8 +47,8 @@ export class Settings {
 
   static resetGameState() {
     Settings.points = 0;
-    Settings.lives = 3;
-    Settings.level = 1;
+    Settings.lives = 2;
+    Settings.level = 4;
   }
 
 }

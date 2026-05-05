@@ -14,7 +14,7 @@ export class Enemies {
     create() {
       const level = this.relatedScene.registry.get('level') || 1;
       const enemyKey = `enemies-${level}`;
-      const [mainCount, secondaryCount] = (level === 1 || level === 4) ? [24, 24] : [36, 36];
+      const [mainCount, secondaryCount] = (level === 1 || level === 5) ? [24, 24] : [36, 36];
 
       this.enemies = this.relatedScene.physics.add.group();
 
@@ -65,8 +65,8 @@ export class Enemies {
       // Posición base
       let gridTop = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
 
-      // Si es nivel 4, empujamos a los enemigos normales 120px hacia abajo
-      if (level === 4) {
+      // Si es nivel 5, empujamos a los enemigos normales 120px hacia abajo
+      if (level === 5) {
           gridTop += 120;
       }
 
@@ -113,12 +113,12 @@ export class Enemies {
 
       // --- CÓDIGO NUEVO PARA EL BOSS ---
 
-      if (level === 4) {
+      if (level === 5) {
         // Obtenemos el top original para posicionar al Boss
         const top = Math.max(32, Math.round(this.relatedScene.scale.height * 0.06));
 
         // top + 50 lo despegará de los textos de Puntos/Nivel
-        const boss = this.enemies.create(W / 2, top + 50, 'boss-4');
+        const boss = this.enemies.create(W / 2, top + 50, 'boss-5');
         boss.setData('type', 'boss');
         boss.setData('score', 1500);
         boss.setData('hp', 60);

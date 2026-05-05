@@ -59,8 +59,6 @@ export class Game extends Phaser.Scene {
 
     create(){
 
-        Settings.setLives(3);
-
         this.fullscreen.create();
 
         this.livesDisplay.create();
@@ -402,7 +400,18 @@ export class Game extends Phaser.Scene {
               break;
 
           case 4:
-              // N4 - Velocidad X2 y parpadeo
+              // N4 - Agregar una vida extra
+              let currentLives = this.registry.get('lives');
+              if (currentLives < 4) { // Opcional: limitar a un máximo de 4
+                  currentLives++;
+                  this.registry.set('lives', currentLives);
+                  Settings.setLives(currentLives);
+                  // El componente LivesDisplay se actualiza automáticamente por el evento 'changedata-lives'
+              }
+              break;
+
+          case 5:
+              // N5 - Velocidad X2 y parpadeo
               const originalSpeed = player.getData('vel-x');
               player.setData('vel-x', originalSpeed * 2);
 
