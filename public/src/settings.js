@@ -48,7 +48,7 @@ export class Settings {
   static resetGameState() {
     Settings.points = 0;
     Settings.lives = 2;
-    Settings.level = 4;
+    Settings.level = 1;
   }
 
 }
