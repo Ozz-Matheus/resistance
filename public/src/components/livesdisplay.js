@@ -8,6 +8,7 @@ export class LivesDisplay {
   static ICON_HEIGHT = 28;
   static ICON_SPACING = 8;
   static ICON_SCALE = 0.20;
+  static MAX_LIVES = 4; // Límite máximo de vidas definido en tu lógica
 
   constructor(scene) {
     this.relatedScene = scene;
@@ -20,16 +21,20 @@ export class LivesDisplay {
     const y = 36;
     const hudScale = Math.max(0.12, Math.min(0.24, this.relatedScene.scale.height / 3200));
 
-    // Inicialmente obtenemos las vidas del Registry (o de Settings como valor por defecto)
+    // Obtenemos las vidas iniciales
     const initialLives = this.relatedScene.registry.get('lives') ?? Settings.getLives();
 
-    for (let i = 0; i < initialLives; i++) {
+    // Creamos SIEMPRE el máximo de iconos en memoria
+    for (let i = 0; i < LivesDisplay.MAX_LIVES; i++) {
       const x = startX + i * (LivesDisplay.ICON_WIDTH + LivesDisplay.ICON_SPACING);
       const icon = this.relatedScene.add.image(x, y, 'player')
         .setScale(hudScale)
         .setOrigin(0, 0)
         .setAlpha(0.8)
         .setDepth(9999);
+      
+      // Ocultamos los que exceden la cantidad inicial
+      icon.setVisible(i < initialLives);
       this.livesGroup.add(icon);
     }
 
