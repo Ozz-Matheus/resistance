@@ -33,6 +33,7 @@
     html, body {
       width: 100vw;
       height: 100dvh;
+      position: fixed;
       font-family: 'BebasNeue', Arial, sans-serif;
     }
     body{

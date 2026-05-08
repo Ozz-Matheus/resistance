@@ -35,7 +35,8 @@ export function hudLayout(scene) {
   const isiOSChrome = isIOS && /CriOS|Chrome/i.test(navigator.userAgent);
 
   // Acolchado base mínimo (home bar)
-  const extraBasePx = isIOS ? (isiOSChrome ? 8 : 6) : 0;
+  // const extraBasePx = isIOS ? (isiOSChrome ? 8 : 6) : 0;
+  const extraBasePx = isIOS ? (isiOSChrome ? 16 : 30) : 0;
 
   // Estimación por porcentaje si Chrome iOS reporta poco delta
   let percentBarPx = 0;
