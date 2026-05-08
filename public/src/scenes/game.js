@@ -389,13 +389,13 @@ export class Game extends Phaser.Scene {
               break;
 
           case 3:
-              // N3 - Ralentiza naves y disparos 10 Segundos
-              this.enemies.formation.SPEED_ON_THE_X_AXIS *= 0.5; // Ralentiza enemigos
-              this.attacks.rhythm.attacks *= 2; // Disparan más lento
+              // N3 - Ralentiza naves y disparos 10 Segundos (Ultra lento)
+              this.enemies.formation.SPEED_ON_THE_X_AXIS *= 0.1; // 10% de la velocidad
+              this.attacks.rhythm.attacks *= 5; // Disparan 5 veces más lento
 
               this.time.delayedCall(10000, () => {
-                  this.enemies.formation.SPEED_ON_THE_X_AXIS *= 2; // Vuelve a la normalidad
-                  this.attacks.rhythm.attacks /= 2;
+                  this.enemies.formation.SPEED_ON_THE_X_AXIS *= 10; // Vuelve a la normalidad (1 / 0.1)
+                  this.attacks.rhythm.attacks /= 5;
               });
               break;
 
