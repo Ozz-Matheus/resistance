@@ -36,7 +36,7 @@ export class ControlsPowers extends Phaser.Scene {
         }).setOrigin(0.5, 0);
 
         const btnBack = this.add.text(0, 0, Texts.back, {
-            fontSize: `${md}px`, ...TextStyles.success
+            fontSize: `${sm}px`, ...TextStyles.success
         }).setOrigin(0.5).setInteractive();
 
         btnBack.on('pointerdown', () => {

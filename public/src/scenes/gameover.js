@@ -43,7 +43,7 @@ export class GameOver extends Phaser.Scene {
         
         this.add.text(width / 2, height * 0.85, Texts.retry, {
             fontSize: `${md}px`,
-            ...TextStyles.base
+            ...TextStyles.success
         }).setOrigin(0.5);
 
         const score = Settings.getPoints();

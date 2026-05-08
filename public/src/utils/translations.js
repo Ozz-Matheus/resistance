@@ -14,6 +14,7 @@ export const Texts = {
   playAgain: "👉 jugar de nuevo",
   viewControls: "⚙️ \t Ver Controles y Poderes",
   back: "👈 volver al menú",
+  continue: "👉 Continuar",
 
   // Textos por Nivel (Pre-Level)
   preLevel: {
@@ -35,7 +36,7 @@ export const Texts = {
 
   // Textos de Nivel Superado (Level Pass)
   levelPassedMsg: {
-    1: "villanos \n neutralizados\n\nla resistencia \n avanza.\n\naún quedan \n fuerzas \n por derrotar.\n\ncontinúa.",
+    1: "villanos \n neutralizados\n\nla resistencia \n avanza.\n\naún quedan \n fuerzas \n por derrotar.\n\nadelante.",
     2: "villanos \n contenidos\n\nhas detenido \n su expansión.\n\nno bajes \n la guardia.\n más villanos \n están cerca.\n\nprepárate.",
     3: "villanos superados\n\nhas resistido \n lo más duro.\n\nlas defensas del \n imperio comienzan \n a fallar.\n\nestán expuestos.\n\nes momento \n de avanzar.",
     4: "villanos derrotados\n\nhas superado \n la amenaza más fuerte.\n\nel emperador \n está vulnerable.\n\nes tu oportunidad \n de acabar con él."
