@@ -21,7 +21,7 @@ export class GameOver extends Phaser.Scene {
         const currentLevel = Settings.getLevel();
         const gameOverMsg = Texts.gameOverMsg[currentLevel] || "Fin del juego";
 
-        this.add.text(width / 2, height * 0.45, gameOverMsg, {
+        this.add.text(width / 2, height * 0.38, gameOverMsg, {
             fontSize: `${md}px`,
             align: 'center',
             wordWrap: { width: width * 0.95, useAdvancedWrap: true },
@@ -29,13 +29,19 @@ export class GameOver extends Phaser.Scene {
         }).setOrigin(0.5);
 
         if (Settings.getPoints() >= Settings.getRecord() * 0.9) {
-          this.add.text(width / 2, height * 0.25, Texts.almostRecord, {
+          this.add.text(width / 2, height * 0.15, Texts.almostRecord, {
             fontSize: `${sm}px`,
             ...TextStyles.success
           }).setOrigin(0.5);
         }
 
-        this.add.text(width / 2, height * 0.75, Texts.retry, {
+        this.add.text(width / 2, height * 0.68, Texts.score(Settings.getPoints()), {
+            fontSize: `${sm}px`,
+            ...TextStyles.base
+        }).setOrigin(0.5);
+
+        
+        this.add.text(width / 2, height * 0.85, Texts.retry, {
             fontSize: `${md}px`,
             ...TextStyles.base
         }).setOrigin(0.5);
