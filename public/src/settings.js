@@ -4,7 +4,7 @@ export class Settings {
   static points = 0;
   static level = 1;
   static lives = 2;
-  static record = 48000;
+  static record = 54600;
   static max_level = 5;
 
 
