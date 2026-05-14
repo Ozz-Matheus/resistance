@@ -39,7 +39,7 @@ export class MainMenu extends Phaser.Scene {
             
             // Re-posicionar botones por si cambia el alto de la pantalla
             btnStart.setPosition(currentWidth / 2, currentHeight * 0.65);
-            btnControls.setPosition(currentWidth / 2, currentHeight * 0.77);
+           // btnControls.setPosition(currentWidth / 2, currentHeight * 0.77);
         };
 
         // Botón Jugar
@@ -51,18 +51,18 @@ export class MainMenu extends Phaser.Scene {
         btnStart.on('pointerdown', () => {
             Settings.resetGameState();
             this.sound.stopAll();
-            this.scene.start('prelevel');
+            this.scene.start('controlspowers');
         });
 
         // Botón Ver Controles
-        const btnControls = this.add.text(width / 2, height * 0.77, Texts.viewControls, {
-            fontSize: `${sm}px`,
-            ...TextStyles.base
-        }).setOrigin(0.5).setInteractive();
+        // const btnControls = this.add.text(width / 2, height * 0.77, Texts.viewControls, {
+        //     fontSize: `${sm}px`,
+        //     ...TextStyles.base
+        // }).setOrigin(0.5).setInteractive();
 
-        btnControls.on('pointerdown', () => {
-            this.scene.start('controlspowers');
-        });
+        // btnControls.on('pointerdown', () => {
+        //     this.scene.start('controlspowers');
+        // });
 
         // Llamamos al resize inicial y lo atamos al evento de Phaser
         resizeLogoAndButtons();

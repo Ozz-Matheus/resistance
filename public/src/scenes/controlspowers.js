@@ -35,12 +35,12 @@ export class ControlsPowers extends Phaser.Scene {
             fontSize: `${sm}px`, align: 'center', ...TextStyles.base
         }).setOrigin(0.5, 0);
 
-        const btnBack = this.add.text(0, 0, Texts.back, {
+        const btnStart = this.add.text(0, 0, Texts.newGame, {
             fontSize: `${sm}px`, ...TextStyles.success
         }).setOrigin(0.5).setInteractive();
 
-        btnBack.on('pointerdown', () => {
-            this.scene.start('mainmenu');
+        btnStart.on('pointerdown', () => {
+            this.scene.start('prelevel');
         });
 
         // 4. Función para acomodar todo dinámicamente
@@ -71,7 +71,7 @@ export class ControlsPowers extends Phaser.Scene {
             currentY += h * 0.25;
             footerPowers.setPosition(w / 2, currentY);
 
-            btnBack.setPosition(w / 2, h * 0.90);
+            btnStart.setPosition(w / 2, h * 0.90);
         };
 
         // Ejecutar la primera vez
