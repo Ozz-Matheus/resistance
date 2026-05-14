@@ -76,7 +76,7 @@
           width: 90%;
           color: #fff;
           font-family: 'BebasNeue', Arial, sans-serif;">
-      <h2 style="margin-bottom: 12px;">Registra tu puntaje</h2>
+      <h2 id="player-score-title" style="margin-bottom: 12px;">Registra tu puntaje</h2>
 
       <label style="display:block; margin-bottom:8px;">
         Alias
@@ -121,6 +121,7 @@
     window.showPlayerScoreForm = function (score) {
       const modal = document.getElementById('player-score-modal');
       const form = document.getElementById('player-score-form');
+      const title = document.getElementById('player-score-title');
       const skip = document.getElementById('player-score-skip');
       const scoreInput = document.getElementById('player-score-value');
       const status = document.getElementById('player-score-status');
@@ -132,6 +133,7 @@
 
       let alreadySaved = false;
 
+      title.textContent = `Tu puntaje: ${score}`;
       scoreInput.value = score;
       status.textContent = '';
       skip.textContent = 'Omitir';
