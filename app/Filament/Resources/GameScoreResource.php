@@ -43,7 +43,7 @@ class GameScoreResource extends Resource
                     ->suffix(' Ptje'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado en')
-                    ->dateTime()
+                    ->since()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -51,7 +51,7 @@ class GameScoreResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('score', 'desc')
             ->filters([
                 //
             ])

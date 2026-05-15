@@ -102,7 +102,7 @@
       <input type="hidden" name="score" id="player-score-value">
 
       <p id="player-score-status"
-               style="margin:8px 0 0; font-size:12px; min-height:1em;"></p>
+               style="font-size:1.5em; min-height:1em;"></p>
 
       <div style="display:flex; gap:8px; justify-content:flex-end;">
         <button type="button" id="player-score-skip">Cerrar</button>
