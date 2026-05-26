@@ -10,6 +10,9 @@ export class PreLevelScene extends Phaser.Scene {
   }
 
   create() {
+    // Reproducir el sonido al cargar la pantalla
+    this.sound.play('prelevel-sound', { volume: 0.8 });
+    
     const { sm, md } = fontScale(this);
     const { width, height } = this.sys.game.config;
 

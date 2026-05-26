@@ -16,6 +16,10 @@ export class StartScene extends Phaser.Scene {
   }
 
   create() {
+
+    // Reproducir el sonido al cargar la pantalla
+    this.sound.play('start-sound', { volume: 0.8 });
+
     const { body, md } = fontScale(this);
     const { width, height } = this.sys.game.config;
 

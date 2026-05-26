@@ -55,14 +55,17 @@ scene.load.spritesheet('fullscreen-button', './src/images/fullscreen-button.png'
 
 /* ------------------------------------------------------------------------------------------ */
 
+scene.load.audio('start-sound', './src/audio/start.mp3');
 scene.load.audio('bg-music', './src/audio/bg-music.ogg');
 scene.load.audio('bullet-sound', './src/audio/bullet-hero.mp3');
 scene.load.audio('die-throw', './src/audio/bullet-enemy.mp3');
 scene.load.audio('explosion-sound', './src/audio/explosion.mp3');
 scene.load.audio('loading-sound', './src/audio/loading.mp3');
+scene.load.audio('controls-sound', './src/audio/controls.mp3');
+scene.load.audio('prelevel-sound', './src/audio/prelevel.mp3');
+scene.load.audio('level-passed', './src/audio/level-passed.mp3');
 scene.load.audio('victory-music', './src/audio/victory-music.mp3');
 scene.load.audio('gameover-music', './src/audio/gameover-music.ogg');
-scene.load.audio('level-passed', './src/audio/level-passed.mp3');
 
 
 // Agregar sonidos de power-ups
