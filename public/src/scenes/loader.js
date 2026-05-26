@@ -59,6 +59,7 @@ scene.load.audio('bg-music', './src/audio/bg-music.ogg');
 scene.load.audio('bullet-sound', './src/audio/bullet-hero.mp3');
 scene.load.audio('die-throw', './src/audio/bullet-enemy.mp3');
 scene.load.audio('explosion-sound', './src/audio/explosion.mp3');
+scene.load.audio('loading-sound', './src/audio/loading.mp3');
 scene.load.audio('victory-music', './src/audio/victory-music.mp3');
 scene.load.audio('gameover-music', './src/audio/gameover-music.ogg');
 scene.load.audio('level-passed', './src/audio/level-passed.mp3');
