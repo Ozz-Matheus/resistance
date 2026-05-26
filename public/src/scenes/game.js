@@ -372,6 +372,9 @@ export class Game extends Phaser.Scene {
 
       const level = this.registry.get('level') || 1;
 
+      // Reproducir el sonido correspondiente al power-up actual
+      this.sound.play(`sound-powerup-${level}`);
+
       switch(level) {
           case 1:
               // N1 - 3 disparos (Modificas tu componente bullets.js para permitir 3)

@@ -62,4 +62,14 @@ scene.load.audio('explosion-sound', './src/audio/explosion.mp3');
 scene.load.audio('victory-music', './src/audio/victory-music.mp3');
 scene.load.audio('gameover-music', './src/audio/gameover-music.ogg');
 scene.load.audio('level-passed', './src/audio/level-passed.mp3');
+
+
+// Agregar sonidos de power-ups
+scene.load.audio('sound-powerup-1', './src/audio/powerup-shots.mp3');
+scene.load.audio('sound-powerup-2', './src/audio/powerup-shield.mp3');
+scene.load.audio('sound-powerup-3', './src/audio/powerup-slow.mp3');
+scene.load.audio('sound-powerup-4', './src/audio/powerup-live.mp3');
+scene.load.audio('sound-powerup-5', './src/audio/powerup-speed.mp3');
+
+
 }
