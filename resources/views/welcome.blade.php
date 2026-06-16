@@ -66,7 +66,7 @@
        display: none;
        align-items: center;
        justify-content: center;
-       background: rgba(0, 184, 63, 0.28);
+       background: rgba(0, 0, 0, 0.96);
        z-index: 9999;">
     <form id="player-score-form" style="
           background: rgba(0, 184, 63, 0.64);
@@ -180,12 +180,24 @@
             skip.textContent = 'Cerrar';
             submitBtn.disabled = true;
           } else {
-            status.textContent = 'No se pudo guardar. Intenta más tarde.';
+            // Extraemos la respuesta real de Laravel para depurar
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Error de servidor:', response.status, errorData);
+
+            if (response.status === 419) {
+              status.textContent = 'Tu sesión expiró. Recarga la página y vuelve a intentar.';
+            } else if (response.status === 422) {
+              status.textContent = 'Error: ' + (errorData.message || 'Revisa tus datos.');
+            } else {
+              status.textContent = 'No se pudo guardar. Intenta más tarde.';
+            }
           }
         } catch (err) {
-          console.error(err);
+          console.error('Error de red/JS:', err);
           status.textContent = 'Error de conexión. Intenta más tarde.';
         }
+
+
       }
 
       function onSkip() {

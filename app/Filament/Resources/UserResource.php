@@ -10,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class UserResource extends Resource
@@ -65,7 +66,7 @@ class UserResource extends Resource
                     ->getOptionLabelFromRecordUsing(fn ($record) => Str::headline($record->name))
                     ->columnSpanFull()
                     ->columns(3)
-                    ->required(),
+                    ->required(fn (?Model $record) => ! $record?->hasRole('super_admin')),
             ])->columns(3);
     }
 

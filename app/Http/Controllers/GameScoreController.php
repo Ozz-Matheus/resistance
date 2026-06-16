@@ -12,7 +12,7 @@ class GameScoreController extends Controller
         $data = $request->validate([
             'alias' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
-            'phone' => ['required', 'string', 'max:10'],
+            'phone' => ['required', 'digits:10'],
             'score' => ['required', 'integer', 'min:0'],
         ]);
 
