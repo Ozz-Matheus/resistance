@@ -63,8 +63,11 @@ const config = {
   }
 };
 
-// --- ESPERAR FUENTES ---
-document.fonts.ready.then(() => {
+// --- FORZAR CARGA DE FUENTES ---
+Promise.all([
+  document.fonts.load('10px "BebasNeue"'),
+  document.fonts.load('10px "StarJedi"')
+]).then(() => {
 
   const game = new Phaser.Game(config);
 
