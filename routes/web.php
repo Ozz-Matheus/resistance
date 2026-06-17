@@ -7,6 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Top Scores
+Route::get('/top', [GameScoreController::class, 'index'])->name('scores.index');
+
 // Save Game
 Route::post('/scores', [GameScoreController::class, 'store'])
     ->name('scores.store');

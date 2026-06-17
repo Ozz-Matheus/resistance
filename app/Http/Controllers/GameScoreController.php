@@ -7,6 +7,19 @@ use Illuminate\Http\Request;
 
 class GameScoreController extends Controller
 {
+    public function index()
+    {
+        // Controlamos el límite desde el .env, con fallback a 10
+        $limit = config('app.leaderboard_limit', env('LEADERBOARD_LIMIT', 10));
+
+        $scores = GameScore::select('alias', 'score')
+            ->orderBy('score', 'desc')
+            ->take($limit)
+            ->get();
+
+        return view('leaderboard', compact('scores'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
