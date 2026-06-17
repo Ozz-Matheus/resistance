@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GameScoreController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
