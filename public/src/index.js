@@ -5,6 +5,7 @@ import { MainMenu } from './scenes/mainmenu.js';
 import { ControlsPowers } from './scenes/controlspowers.js';
 import { GameOver } from './scenes/gameover.js';
 import { VictoryScreen } from './scenes/victory.js';
+import { CreditsScene } from './scenes/credits.js';
 import { PreLevelScene } from './scenes/prelevel.js';
 import { EnemyIntroScene } from './scenes/enemyintro.js';
 import { LevelPassedScene } from './scenes/levelpassed.js';
@@ -40,7 +41,8 @@ const config = {
     Game,
     GameOver,
     VictoryScreen,
-    LevelPassedScene
+    LevelPassedScene,
+    CreditsScene
   ],
 
   physics: {

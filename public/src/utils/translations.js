@@ -46,6 +46,10 @@ export const Texts = {
   victoryTitle: "victoria",
   victoryDesc: "el emperador \n ha sido derrotado.\nla resistencia \n ha liberado la vía láctea.\ngracias, guerrero estelar.\nel multiverso \n está en deuda contigo.\nsigue resistiendo.\nel planeta tierra aún \n depende de ti.",
 
+  // Créditos
+  creditsTitle: "🎮 \t C R É D I T O S",
+  creditsText: "🍉 \t Liderazgo del Proyecto\nPersona 1\n\n💻 \t Programación\nPersona 2\n\n🎯 \t Pruebas y Validación\nPersona 3\n\n🎵 \t Música y Sonido\nPersona 4\n\n🎨 \t Arte Visual\nPersona 5\n\n👾 \t Diseño de Contenido\nPersona 6\n\n🌟 \t Colaboradores\n\n🍉 \t Equipo de Apoyo\n\n❤️ \t Agradecimientos",
+
   // HUD / Extras
   newRecord: "¡Nuevo récord!",
   almostRecord: "¡Estuviste cerca \n del récord!",
