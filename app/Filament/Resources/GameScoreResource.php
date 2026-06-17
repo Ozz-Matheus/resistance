@@ -31,6 +31,8 @@ class GameScoreResource extends Resource
                 Tables\Columns\TextColumn::make('alias')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->copyable()
+                    ->copyMessage(__('Email copied to clipboard'))
                     ->label('Correo')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
@@ -44,6 +46,7 @@ class GameScoreResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado en')
                     ->since()
+                    ->dateTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
