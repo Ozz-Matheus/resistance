@@ -21,11 +21,16 @@ export class Player {
       Math.floor(H * 0.82),
       'player'
     );
+
     this.player.setScale(0.4, 0.4);
     this.player.setCollideWorldBounds(true);
     this.player.setBounce(0.2);
 
+    // 1. Registramos las teclas direccionales estándar (flechas)
     this.controls = this.relatedScene.input.keyboard.createCursorKeys();
+    
+    // 2. Registramos las teclas WASD
+    this.wasd = this.relatedScene.input.keyboard.addKeys('W,A,S,D');
 
     // posición segura inicial (encima de los pads)
     this.reposition();
@@ -40,7 +45,6 @@ export class Player {
       this.relatedScene.scale.off('resize', handleResize);
       this.relatedScene.game.events.off('viewport-changed', handleResize);
     });
-
   }
 
   // coloca el centro del player siempre por encima del borde superior de los pads
@@ -57,6 +61,7 @@ export class Player {
     let safeY = Math.round(topOfControls - gap - halfShip);
     const minY = Math.floor(H * 0.80);
     const maxY = H - halfShip - 2;
+
     safeY = Phaser.Math.Clamp(safeY, minY, maxY);
 
     if (this.player) {
@@ -70,9 +75,10 @@ export class Player {
   }
 
   update() {
-    if (this.controls.left.isDown || this.relatedScene.dpadLeft?.isDown) {
+    // 3. Agregamos this.wasd.A y this.wasd.D a las condiciones de movimiento
+    if (this.controls.left.isDown || this.wasd.A.isDown || this.relatedScene.dpadLeft?.isDown) {
       this.player.setVelocityX(-this.player.getData('vel-x'));
-    } else if (this.controls.right.isDown || this.relatedScene.dpadRight?.isDown) {
+    } else if (this.controls.right.isDown || this.wasd.D.isDown || this.relatedScene.dpadRight?.isDown) {
       this.player.setVelocityX(this.player.getData('vel-x'));
     } else {
       this.player.setVelocityX(0);
