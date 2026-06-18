@@ -13,7 +13,7 @@ export class CreditsScene extends Phaser.Scene {
         const { md, sm } = fontScale(this);
         const { width, height } = this.sys.game.config;
 
-        createBackground(this, -10);
+        createBackground(this, -10, 'back-main');
 
         // Texto de créditos centrado, inicia justo abajo de la pantalla visible
         const creditsText = this.add.text(width / 2, height + 50, `${Texts.creditsTitle}\n\n${Texts.creditsText}`, {
