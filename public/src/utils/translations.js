@@ -15,6 +15,7 @@ export const Texts = {
   viewControls: "⚙️ \t Ver Controles y Poderes",
   back: "👈 volver al menú",
   continue: "👉 Continuar",
+  viewTopScores: "🏆 \t ver top scores",
 
   // Textos por Nivel (Pre-Level)
   preLevel: {

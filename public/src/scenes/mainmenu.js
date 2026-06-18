@@ -54,15 +54,15 @@ export class MainMenu extends Phaser.Scene {
             this.scene.start('controlspowers');
         });
 
-        // Botón Ver Controles
-        // const btnControls = this.add.text(width / 2, height * 0.77, Texts.viewControls, {
-        //     fontSize: `${sm}px`,
-        //     ...TextStyles.base
-        // }).setOrigin(0.5).setInteractive();
+        // Botón Ver Top Scores
+        const btnTopScores = this.add.text(width / 2, height * 0.74, Texts.viewTopScores, {
+            fontSize: `${sm}px`,
+            ...TextStyles.base
+        }).setOrigin(0.5).setInteractive();
 
-        // btnControls.on('pointerdown', () => {
-        //     this.scene.start('controlspowers');
-        // });
+        btnTopScores.on('pointerdown', () => {
+            window.location.href = '/top';
+        });
 
         // Llamamos al resize inicial y lo atamos al evento de Phaser
         resizeLogoAndButtons();
