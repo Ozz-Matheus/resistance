@@ -7,6 +7,12 @@
     <link rel="icon" type="image/png" href="{{ asset('favicon/ico.png') }}" />
     <style>
         @font-face {
+            font-family: 'StarJedi';
+            src: url('{{ asset('src/fonts/Starjedi.woff2') }}') format('woff2'),
+                url('{{ asset('src/fonts/Starjedi.woff') }}') format('woff');
+            font-display: swap;
+        }
+        @font-face {
             font-family: 'BebasNeue';
             src: url('{{ asset('src/fonts/BebasNeue.woff2') }}') format('woff2'),
                  url('{{ asset('src/fonts/BebasNeue.woff') }}') format('woff');
@@ -23,8 +29,9 @@
             margin: 0;
         }
         h1 {
+            font-family: 'StarJedi';
             color: #0bb83f;
-            font-size: 3rem;
+            font-size: 2.3rem;
             margin-bottom: 2rem;
             text-align: center;
             text-shadow: 1px 1px 6px #006a00;
@@ -45,29 +52,29 @@
             color: #0bb83f; 
             border-bottom: 2px solid #0bb83f;
         }
+        span { 
+            display: inline-block;
+            margin-right: 0.5rem; 
+        }
+        .title, .back-btn{ font-family: 'StarJedi'; }
         .score-col { text-align: right; }
         .rank { color: #888; width: 40px; text-align: center; }
         .back-btn {
             margin-top: 3rem;
-            color: #fff;
+            color: #0bb83f;
             text-decoration: none;
             font-size: 1.2rem;
-            border: 1px solid #333;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            transition: all 0.2s;
         }
-        .back-btn:hover { background: #333; }
     </style>
 </head>
 <body>
-    <h1>TOP DE LA RESISTENCIA</h1>
+    <h1>top de la resistencia</h1>
     <table>
         <thead>
             <tr>
                 <th class="rank">#</th>
-                <th>Alias</th>
-                <th class="score-col">Puntaje</th>
+                <th class="title alias-col">Alias</th>
+                <th class="title score-col">Puntaje</th>
             </tr>
         </thead>
         <tbody>
@@ -84,6 +91,6 @@
             @endforelse
         </tbody>
     </table>
-    <a href="{{ url('/') }}" class="back-btn">Volver a la base</a>
+    <a href="{{ route('home') }}" class="back-btn"><span> 👈 </span> volver al menú</a>
 </body>
 </html>
