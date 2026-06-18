@@ -15,7 +15,7 @@ export class MainMenu extends Phaser.Scene {
         const { width, height } = this.sys.game.config;
 
         // 1. Cargamos el fondo con comportamiento "cover"
-        createBackground(this, -10);
+        createBackground(this, -10, 'back-main');
 
         // 2. Colocamos el logo independiente (texto + esfera con fondo transparente)
         const logo = this.add.image(width / 2, height * 0.35, 'logo')

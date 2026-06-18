@@ -11,6 +11,7 @@ export function loader (scene) {
 /* ------------------------------------------------------------------------------------------ */
 
 scene.load.image('logo','./src/images/logo.png');
+scene.load.image('back-main','./src/images/back-main.png');
 scene.load.image('background','./src/images/background.png');
 scene.load.image('blue-star','./src/images/blue-star.png');
 scene.load.image('red-star','./src/images/red-star.png');

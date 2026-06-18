@@ -8,7 +8,7 @@ export class LivesDisplay {
   static ICON_HEIGHT = 28;
   static ICON_SPACING = 8;
   static ICON_SCALE = 0.20;
-  static MAX_LIVES = 6; // Límite máximo de vidas definido en tu lógica
+  static MAX_LIVES = 4; // Límite máximo de vidas definido en tu lógica
 
   constructor(scene) {
     this.relatedScene = scene;
