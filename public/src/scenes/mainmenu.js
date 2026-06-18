@@ -39,11 +39,15 @@ export class MainMenu extends Phaser.Scene {
             
             // Re-posicionar botones por si cambia el alto de la pantalla
             btnStart.setPosition(currentWidth / 2, currentHeight * 0.65);
-           // btnControls.setPosition(currentWidth / 2, currentHeight * 0.77);
+            btnTopScores.setPosition(
+                    currentWidth / 2,
+                    btnStart.y + btnStart.height + 30
+                );
+
         };
 
         // Botón Jugar
-        const btnStart = this.add.text(width / 2, height * 0.65, Texts.newGame, {
+        const btnStart = this.add.text(0, 0, Texts.newGame, {
             fontSize: `${md}px`,
             ...TextStyles.success
         }).setOrigin(0.5).setInteractive();
@@ -55,9 +59,9 @@ export class MainMenu extends Phaser.Scene {
         });
 
         // Botón Ver Top Scores
-        const btnTopScores = this.add.text(width / 2, height * 0.74, Texts.viewTopScores, {
+        const btnTopScores = this.add.text(0, 0, Texts.viewTopScores, {
             fontSize: `${sm}px`,
-            ...TextStyles.base
+            ...TextStyles.success
         }).setOrigin(0.5).setInteractive();
 
         btnTopScores.on('pointerdown', () => {

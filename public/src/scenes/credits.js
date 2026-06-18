@@ -10,17 +10,17 @@ export class CreditsScene extends Phaser.Scene {
     }
 
     create() {
-        const { md, sm } = fontScale(this);
+        const { md, body } = fontScale(this);
         const { width, height } = this.sys.game.config;
 
         createBackground(this, -10, 'back-main');
 
         // Texto de créditos centrado, inicia justo abajo de la pantalla visible
         const creditsText = this.add.text(width / 2, height + 50, `${Texts.creditsTitle}\n\n${Texts.creditsText}`, {
-            fontSize: `${sm}px`,
+            fontSize: `${md}px`,
             align: 'center',
             lineSpacing: 10,
-            ...TextStyles.base
+            ...TextStyles.success
         }).setOrigin(0.5, 0);
 
         // Botón Jugar de nuevo fijo abajo (aparece sutilmente con un fade-in)
@@ -39,11 +39,11 @@ export class CreditsScene extends Phaser.Scene {
         });
 
         // Hacemos aparecer el botón "Jugar de nuevo" tras 3 segundos para indicar que se puede salir
-        this.time.delayedCall(3000, () => {
+        this.time.delayedCall(38000, () => {
             this.tweens.add({
                 targets: btnPlayAgain,
                 alpha: 1,
-                duration: 1000
+                duration: 1000,
             });
         });
 

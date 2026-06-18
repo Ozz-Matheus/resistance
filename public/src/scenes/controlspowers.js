@@ -63,19 +63,20 @@ export class ControlsPowers extends Phaser.Scene {
             footerPowers.setStyle({ wordWrap: wrapStyle });
 
             // Posicionar elementos basándonos en porcentajes de la altura
-            let currentY = h * 0.08;
+            let currentY = h * 0.06;
             titleControls.setPosition(w / 2, currentY);
 
-            currentY += h * 0.20;
+            currentY += titleControls.height + 25;
             titlePowers.setPosition(w / 2, currentY);
 
-            currentY += h * 0.18;
+            currentY += titlePowers.height + 25;
             listPowers.setPosition(w / 2, currentY);
 
-            currentY += h * 0.25;
+            currentY += listPowers.height + 30;
             footerPowers.setPosition(w / 2, currentY);
 
-            btnStart.setPosition(w / 2, h * 0.90);
+            currentY += footerPowers.height + 40;
+            btnStart.setPosition(w / 2, currentY);
         };
 
         // Ejecutar la primera vez
