@@ -375,14 +375,42 @@ export class Game extends Phaser.Scene {
       // Reproducir el sonido correspondiente al power-up actual
       this.sound.play(`sound-powerup-${level}`);
 
+      // Función auxiliar para otorgar puntos y mostrar el texto flotante
+      const grantBonusPoints = () => {
+          const bonusPoints = Phaser.Math.Between(20, 60);
+          this.registry.set('points', this.registry.get('points') + bonusPoints);
+          
+          const floatText = this.add.text(player.x, player.y - 20, `+${bonusPoints}`, {
+              fontFamily: 'BebasNeue', fontSize: '20px', fill: '#ffff00',
+              shadow: { offsetX: 1, offsetY: 1, color: '#000', blur: 2, fill: true }
+          }).setOrigin(0.5).setDepth(1001);
+
+          this.tweens.add({ 
+              targets: floatText, y: floatText.y - 30, alpha: 0, duration: 800, 
+              onComplete: () => floatText.destroy() 
+          });
+      };
+
       switch(level) {
           case 1:
-              // N1 - 3 disparos (Modificas tu componente bullets.js para permitir 3)
+              // N1 - 3 disparos 
+              // Si ya tiene los 3 disparos, le damos puntos
+              if (this.bullets.activeLimit === 3) {
+                  grantBonusPoints();
+                  break;
+              }
+              
               this.bullets.activeLimit = 3;
               break;
 
           case 2:
               // N2 - Inmunidad 10 segundos
+              // Si ya es inmune, le damos puntos
+              if (player.getData('isImmune')) {
+                  grantBonusPoints();
+                  break;
+              }
+              
               player.setData('isImmune', true);
               player.setTint(0xffff00); // Feedback visual
               this.time.delayedCall(10000, () => {
@@ -392,29 +420,48 @@ export class Game extends Phaser.Scene {
               break;
 
           case 3:
-              // N3 - Ralentiza naves y disparos 10 Segundos (Ultra lento)
+              // N3 - Ralentiza naves y disparos 10 Segundos
+              // Usamos una bandera para saber si ya están lentos
+              if (player.getData('isSlowActive')) {
+                  grantBonusPoints();
+                  break;
+              }
+              
+              player.setData('isSlowActive', true);
               this.enemies.formation.SPEED_ON_THE_X_AXIS *= 0.1; // 10% de la velocidad
               this.attacks.rhythm.attacks *= 5; // Disparan 5 veces más lento
 
               this.time.delayedCall(10000, () => {
-                  this.enemies.formation.SPEED_ON_THE_X_AXIS *= 10; // Vuelve a la normalidad (1 / 0.1)
+                  this.enemies.formation.SPEED_ON_THE_X_AXIS *= 10; // Vuelve a la normalidad
                   this.attacks.rhythm.attacks /= 5;
+                  player.setData('isSlowActive', false);
               });
               break;
 
           case 4:
               // N4 - Agregar una vida extra
               let currentLives = this.registry.get('lives');
-              if (currentLives < 4) { // Opcional: limitar a un máximo de 4
-                  currentLives++;
-                  this.registry.set('lives', currentLives);
-                  Settings.setLives(currentLives);
-                  // El componente LivesDisplay se actualiza automáticamente por el evento 'changedata-lives'
+              
+              // Si ya tiene 4 vidas, le damos los puntos en lugar de ignorar el ítem
+              if (currentLives >= 4) {
+                  grantBonusPoints();
+                  break;
               }
+              
+              currentLives++;
+              this.registry.set('lives', currentLives);
+              Settings.setLives(currentLives);
               break;
 
           case 5:
               // N5 - Velocidad X2 y parpadeo
+              // Usamos una bandera para saber si ya tiene la velocidad x2
+              if (player.getData('isSpeedActive')) {
+                  grantBonusPoints();
+                  break;
+              }
+              
+              player.setData('isSpeedActive', true);
               const originalSpeed = player.getData('vel-x');
               player.setData('vel-x', originalSpeed * 2);
 
@@ -431,6 +478,7 @@ export class Game extends Phaser.Scene {
                   player.setData('vel-x', originalSpeed);
                   blink.stop();
                   player.setAlpha(1);
+                  player.setData('isSpeedActive', false);
               });
               break;
       }
